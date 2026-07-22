@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Care Hub · Voice Screen-Pop</title>
+    <meta
+      name="description"
+      content="Care Hub voice screen-pop prototype — customer context at the moment a call connects."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <p class="brand-name">Care Hub</p>
+          <p class="brand-sub">Voice Screen-Pop</p>
+        </div>
+      </div>
+      <div class="agent-chip">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Agent · Sam Nguyen · Ready</span>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="queue-panel" aria-labelledby="queue-title">
+        <div class="panel-heading">
+          <h1 id="queue-title">Inbound queue</h1>
+          <p>Simulate a call to see Care Hub populate the agent workspace before pickup.</p>
+        </div>
+
+        <button type="button" class="cta" id="trigger-call" aria-describedby="cta-help">
+          <span class="cta-label">Incoming call</span>
+          <span class="cta-meta">Margaret Chen · Home Care</span>
+        </button>
+        <p id="cta-help" class="help">
+          Screen-pop fires from ANI + IVR intent so the agent starts informed, not cold.
+        </p>
+
+        <ul class="signal-list" aria-label="Call signals">
+          <li>
+            <span>Caller ID</span>
+            <strong>+61 412 883 204</strong>
+          </li>
+          <li>
+            <span>IVR intent</span>
+            <strong>Visit change</strong>
+          </li>
+          <li>
+            <span>Auth level</span>
+            <strong>Verified · DOB</strong>
+          </li>
+        </ul>
+      </section>
+
+      <section
+        class="screen-pop"
+        id="screen-pop"
+        aria-live="polite"
+        aria-labelledby="pop-title"
+        data-state="idle"
+      >
+        <div class="idle-state" id="idle-state">
+          <p class="idle-kicker">Waiting for voice</p>
+          <h2>No active screen-pop</h2>
+          <p>
+            When a call routes, Care Hub opens the customer record, surfaces care context, and
+            lands the agent on the next best action.
+          </p>
+        </div>
+
+        <article class="pop-body" id="pop-body" hidden>
+          <header class="pop-header">
+            <div>
+              <p class="call-badge">
+                <span class="pulse" aria-hidden="true"></span>
+                Live call · ringing
+              </p>
+              <h2 id="pop-title">Margaret Chen</h2>
+              <p class="pop-sub">Client · Home Care Package Level 3 · Adelaide SA</p>
+            </div>
+            <div class="pop-actions">
+              <button type="button" class="btn primary" id="answer-call">Answer</button>
+              <button type="button" class="btn ghost" id="dismiss-call">Dismiss</button>
+            </div>
+          </header>
+
+          <div class="pop-grid">
+            <section class="block identity" aria-labelledby="identity-title">
+              <h3 id="identity-title">Who is calling</h3>
+              <dl>
+                <div>
+                  <dt>Client ID</dt>
+                  <dd>ECH-10482</dd>
+                </div>
+                <div>
+                  <dt>Preferred name</dt>
+                  <dd>Maggie</dd>
+                </div>
+                <div>
+                  <dt>Key contact</dt>
+                  <dd>David Chen · Son · +61 400 221 918</dd>
+                </div>
+                <div>
+                  <dt>Language</dt>
+                  <dd>English</dd>
+                </div>
+              </dl>
+            </section>
+
+            <section class="block intent" aria-labelledby="intent-title">
+              <h3 id="intent-title">Why they called</h3>
+              <p class="intent-lead">
+                IVR captured: request to move Thursday allied health visit to Friday morning.
+              </p>
+              <ul class="intent-tags">
+                <li>Visit change</li>
+                <li>Physiotherapy</li>
+                <li>Same carer preferred</li>
+              </ul>
+            </section>
+
+            <section class="block care" aria-labelledby="care-title">
+              <h3 id="care-title">Care snapshot</h3>
+              <ul class="care-list">
+                <li>
+                  <span>Package balance</span>
+                  <strong>$1,840 remaining this quarter</strong>
+                </li>
+                <li>
+                  <span>Next scheduled visit</span>
+                  <strong>Thu 24 Jul · 10:30 · Physio · Amira K</strong>
+                </li>
+                <li>
+                  <span>Risk flags</span>
+                  <strong>Fall history · Medication support</strong>
+                </li>
+              </ul>
+            </section>
+
+            <section class="block history" aria-labelledby="history-title">
+              <h3 id="history-title">Recent interactions</h3>
+              <ol class="timeline">
+                <li>
+                  <time datetime="2026-07-18">18 Jul</time>
+                  <p>Call · Confirmed Monday personal care · Agent Priya</p>
+                </li>
+                <li>
+                  <time datetime="2026-07-12">12 Jul</time>
+                  <p>Portal · Family asked about transport options</p>
+                </li>
+                <li>
+                  <time datetime="2026-07-03">3 Jul</time>
+                  <p>Visit note · Prefers afternoon appointments after 11am</p>
+                </li>
+              </ol>
+            </section>
+          </div>
+
+          <footer class="next-action">
+            <div>
+              <h3>Suggested next action</h3>
+              <p>
+                Open scheduling, offer Friday 09:30 or 11:00 with Amira, and confirm SMS to Maggie
+                and David.
+              </p>
+            </div>
+            <button type="button" class="btn primary" id="open-schedule">Open scheduling</button>
+          </footer>
+        </article>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
