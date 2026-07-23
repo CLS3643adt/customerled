@@ -284,6 +284,8 @@
     setText("connected-role", flow.callerRole);
     setText("connected-intent", `Inbound · ${flow.label}`);
     if (voiceIntentLabel) voiceIntentLabel.textContent = flow.label;
+    const voiceFromPhone = document.getElementById("voice-from-phone");
+    if (voiceFromPhone) voiceFromPhone.textContent = flow.phone;
     if (voiceCallerTitle) voiceCallerTitle.textContent = `VC-000482 · ${flow.callerName}`;
     if (recordTabLabel) {
       recordTabLabel.textContent = `${flow.recordType} ${flow.recordNumber}`;
