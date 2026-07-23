@@ -1,29 +1,37 @@
-# Care Hub · Voice Screen-Pop
+# Care Hub · Voice Screen-Pop (Salesforce template)
 
-Customer-led prototype for inbound voice: when a call routes, Care Hub populates the agent workspace with identity, IVR intent, care context, and a suggested next action—before the agent picks up.
+Care Hub inbound voice screen-pop built on the **Salesforce Open CTI out-of-the-box call pop** softphone template (`callInitiatedPanel` → Accept / Decline), then the connected panel and Lightning console screen-pop.
 
 ## Path
 
 `customer-led-strategy/care-hub-voice-screen-pop`
 
-## Open the prototype
+## Design baseline
 
-Open `index.html` in a browser, or serve the folder locally:
+- Salesforce Lightning Service Console chrome
+- Softphone utility panel matching Open CTI demo adapter:
+  - Available / search panel
+  - Incoming **call pop** (avatar, name, account, title, Incoming + number, ticker, Decline / Accept)
+  - Connected panel (mini record, Connected ticker, notes, End)
+- On **Accept**, workspace tabs screen-pop for Voice Call + Contact
+- Care Hub accents: **purple** brand + **orange** highlights (replacing default Salesforce blue)
+
+## Open the prototype
 
 ```bash
 python3 -m http.server 8765 --directory .
 ```
 
-Then visit `http://localhost:8765`.
+Visit `http://localhost:8765`.
 
 ## Demo flow
 
-1. Click **Incoming call** to fire the screen-pop.
-2. Review caller identity, IVR intent, care snapshot, and recent interactions.
-3. Click **Answer** to mark the call connected, or **Dismiss** to clear the pop.
-4. Use **Open scheduling** for the suggested next action.
+1. Softphone is open on the right (Phone utility).
+2. Click the phone icon in the softphone toolbar to simulate an inbound call.
+3. Review the OOTB-style call pop, then click **Accept**.
+4. Console opens Voice Call / Contact tabs; softphone switches to Connected.
 
-## Project docs
+## Docs
 
-- [Brief](./docs/brief.md) — problem, outcomes, principles
-- [Call journey](./docs/call-journey.md) — signal → pop → action
+- [Brief](./docs/brief.md)
+- [Call journey](./docs/call-journey.md)

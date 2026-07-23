@@ -3,184 +3,298 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Care Hub · Voice Screen-Pop</title>
+    <title>Care Hub · Salesforce Voice Call Pop</title>
     <meta
       name="description"
-      content="Care Hub voice screen-pop prototype — customer context at the moment a call connects."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=Source+Sans+3:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
+      content="Care Hub voice screen-pop using the Salesforce out-of-the-box call pop softphone template."
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="atmosphere" aria-hidden="true"></div>
-
-    <header class="topbar">
-      <div class="brand">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <div>
-          <p class="brand-name">Care Hub</p>
-          <p class="brand-sub">Voice Screen-Pop</p>
+    <div class="sf-app" data-state="available">
+      <!-- Lightning global header -->
+      <header class="sf-header">
+        <div class="sf-header__brand">
+          <span class="sf-header__cloud" aria-hidden="true">☁</span>
+          <span class="sf-header__app">Service Console</span>
+          <span class="sf-header__divider" aria-hidden="true"></span>
+          <span class="sf-header__org">Care Hub</span>
         </div>
-      </div>
-      <div class="agent-chip">
-        <span class="status-dot" aria-hidden="true"></span>
-        <span>Agent · Sam Nguyen · Ready</span>
-      </div>
-    </header>
-
-    <main class="shell">
-      <section class="queue-panel" aria-labelledby="queue-title">
-        <div class="panel-heading">
-          <h1 id="queue-title">Inbound queue</h1>
-          <p>Simulate a call to see Care Hub populate the agent workspace before pickup.</p>
+        <div class="sf-header__search">
+          <input type="search" placeholder="Search Salesforce" aria-label="Search Salesforce" />
         </div>
+        <div class="sf-header__actions">
+          <button type="button" class="sf-icon-btn" title="Favorites" aria-label="Favorites">☆</button>
+          <button type="button" class="sf-icon-btn" title="Global Actions" aria-label="Global Actions">＋</button>
+          <button type="button" class="sf-icon-btn" title="Guidance Center" aria-label="Guidance Center">?</button>
+          <div class="sf-avatar sf-avatar--sm" title="Sam Nguyen">SN</div>
+        </div>
+      </header>
 
-        <button type="button" class="cta" id="trigger-call" aria-describedby="cta-help">
-          <span class="cta-label">Incoming call</span>
-          <span class="cta-meta">Margaret Chen · Home Care</span>
+      <!-- Console navigation / workspace tabs -->
+      <nav class="sf-nav" aria-label="Console navigation">
+        <button type="button" class="sf-nav__item" data-tab="home" aria-pressed="true">
+          <span class="sf-nav__icon home" aria-hidden="true"></span>
+          Home
         </button>
-        <p id="cta-help" class="help">
-          Screen-pop fires from ANI + IVR intent so the agent starts informed, not cold.
-        </p>
+        <button type="button" class="sf-nav__item" data-tab="voice" hidden>
+          <span class="sf-nav__icon phone" aria-hidden="true"></span>
+          Voice Call
+          <span class="sf-nav__close" data-close-tab="voice" title="Close">×</span>
+        </button>
+        <button type="button" class="sf-nav__item" data-tab="contact" hidden>
+          <span class="sf-nav__icon contact" aria-hidden="true"></span>
+          Margaret Chen
+          <span class="sf-nav__close" data-close-tab="contact" title="Close">×</span>
+        </button>
+      </nav>
 
-        <ul class="signal-list" aria-label="Call signals">
-          <li>
-            <span>Caller ID</span>
-            <strong>+61 412 883 204</strong>
-          </li>
-          <li>
-            <span>IVR intent</span>
-            <strong>Visit change</strong>
-          </li>
-          <li>
-            <span>Auth level</span>
-            <strong>Verified · DOB</strong>
-          </li>
-        </ul>
-      </section>
-
-      <section
-        class="screen-pop"
-        id="screen-pop"
-        aria-live="polite"
-        aria-labelledby="pop-title"
-        data-state="idle"
-      >
-        <div class="idle-state" id="idle-state">
-          <p class="idle-kicker">Waiting for voice</p>
-          <h2>No active screen-pop</h2>
-          <p>
-            When a call routes, Care Hub opens the customer record, surfaces care context, and
-            lands the agent on the next best action.
-          </p>
-        </div>
-
-        <article class="pop-body" id="pop-body" hidden>
-          <header class="pop-header">
-            <div>
-              <p class="call-badge">
-                <span class="pulse" aria-hidden="true"></span>
-                Live call · ringing
+      <div class="sf-body">
+        <!-- Main workspace -->
+        <main class="sf-workspace">
+          <section class="sf-page" data-page="home">
+            <div class="sf-card">
+              <h1>Care Hub Voice</h1>
+              <p>
+                Starting point: Salesforce out-of-the-box Open CTI
+                <strong>call pop</strong> softphone template (Accept / Decline), with Care Hub
+                purple and orange accents.
               </p>
-              <h2 id="pop-title">Margaret Chen</h2>
-              <p class="pop-sub">Client · Home Care Package Level 3 · Adelaide SA</p>
+              <ol class="sf-steps">
+                <li>Open the <strong>Phone</strong> utility in the footer (already open).</li>
+                <li>Click the phone icon to simulate an inbound call.</li>
+                <li>Review the call pop, then click <strong>Accept</strong> to screen-pop the record.</li>
+              </ol>
             </div>
-            <div class="pop-actions">
-              <button type="button" class="btn primary" id="answer-call">Answer</button>
-              <button type="button" class="btn ghost" id="dismiss-call">Dismiss</button>
+          </section>
+
+          <section class="sf-page" data-page="voice" hidden>
+            <div class="sf-record">
+              <div class="sf-highlights sf-highlights--voice">
+                <div class="sf-highlights__icon phone" aria-hidden="true"></div>
+                <div class="sf-highlights__body">
+                  <p class="sf-highlights__type">Voice Call</p>
+                  <h2>VC-000482 · Margaret Chen</h2>
+                  <div class="sf-highlights__fields">
+                    <div>
+                      <span>Call Type</span>
+                      <strong>Inbound</strong>
+                    </div>
+                    <div>
+                      <span>From</span>
+                      <strong>+61 412 883 204</strong>
+                    </div>
+                    <div>
+                      <span>Call Status</span>
+                      <strong id="voice-status">in-progress</strong>
+                    </div>
+                    <div>
+                      <span>Queue</span>
+                      <strong>Home Care</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="sf-record__grid">
+                <article class="sf-card">
+                  <header class="sf-card__header">Call Details</header>
+                  <dl class="sf-dl">
+                    <div><dt>Caller</dt><dd>Margaret Chen</dd></div>
+                    <div><dt>ANI</dt><dd>+61 412 883 204</dd></div>
+                    <div><dt>IVR Intent</dt><dd>Visit change</dd></div>
+                    <div><dt>Auth Level</dt><dd>Verified · DOB</dd></div>
+                    <div><dt>Related Contact</dt><dd>ECH-10482</dd></div>
+                    <div><dt>Owner</dt><dd>Sam Nguyen</dd></div>
+                  </dl>
+                </article>
+                <article class="sf-card">
+                  <header class="sf-card__header">Care Hub Context</header>
+                  <dl class="sf-dl">
+                    <div><dt>Package</dt><dd>Home Care Package Level 3</dd></div>
+                    <div><dt>Next Visit</dt><dd>Thu 24 Jul · 10:30 · Physio</dd></div>
+                    <div><dt>Preferred Carer</dt><dd>Amira K</dd></div>
+                    <div><dt>Risk Flags</dt><dd>Fall history · Medication support</dd></div>
+                  </dl>
+                </article>
+              </div>
             </div>
+          </section>
+
+          <section class="sf-page" data-page="contact" hidden>
+            <div class="sf-record">
+              <div class="sf-highlights sf-highlights--contact">
+                <div class="sf-highlights__icon contact" aria-hidden="true"></div>
+                <div class="sf-highlights__body">
+                  <p class="sf-highlights__type">Contact</p>
+                  <h2>Margaret Chen</h2>
+                  <div class="sf-highlights__fields">
+                    <div>
+                      <span>Title</span>
+                      <strong>Home Care Client</strong>
+                    </div>
+                    <div>
+                      <span>Account</span>
+                      <strong>Care Hub · Adelaide</strong>
+                    </div>
+                    <div>
+                      <span>Phone</span>
+                      <strong>+61 412 883 204</strong>
+                    </div>
+                    <div>
+                      <span>Client ID</span>
+                      <strong>ECH-10482</strong>
+                    </div>
+                  </div>
+                </div>
+                <div class="sf-highlights__actions">
+                  <button type="button" class="slds-button slds-button_neutral">Edit</button>
+                  <button type="button" class="slds-button slds-button_brand">New Case</button>
+                </div>
+              </div>
+              <div class="sf-record__grid">
+                <article class="sf-card">
+                  <header class="sf-card__header">Contact Details</header>
+                  <dl class="sf-dl">
+                    <div><dt>Preferred Name</dt><dd>Maggie</dd></div>
+                    <div><dt>Key Contact</dt><dd>David Chen · Son · +61 400 221 918</dd></div>
+                    <div><dt>Language</dt><dd>English</dd></div>
+                    <div><dt>Mailing City</dt><dd>Adelaide, SA</dd></div>
+                  </dl>
+                </article>
+                <article class="sf-card">
+                  <header class="sf-card__header">Recent Interactions</header>
+                  <ul class="sf-list">
+                    <li><time>18 Jul</time> Call · Confirmed Monday personal care · Agent Priya</li>
+                    <li><time>12 Jul</time> Portal · Family asked about transport options</li>
+                    <li><time>3 Jul</time> Visit note · Prefers afternoon appointments after 11am</li>
+                  </ul>
+                </article>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <!-- Open CTI softphone utility panel -->
+        <aside class="sf-softphone" aria-label="Phone softphone" data-panel="available">
+          <header class="sf-softphone__header">
+            <span class="sf-softphone__title">
+              <span class="sf-softphone__phone-icon" aria-hidden="true"></span>
+              Phone
+            </span>
+            <button type="button" class="sf-icon-btn sf-icon-btn--dark" id="softphone-minimize" title="Minimize">
+              ▬
+            </button>
           </header>
 
-          <div class="pop-grid">
-            <section class="block identity" aria-labelledby="identity-title">
-              <h3 id="identity-title">Who is calling</h3>
-              <dl>
-                <div>
-                  <dt>Client ID</dt>
-                  <dd>ECH-10482</dd>
-                </div>
-                <div>
-                  <dt>Preferred name</dt>
-                  <dd>Maggie</dd>
-                </div>
-                <div>
-                  <dt>Key contact</dt>
-                  <dd>David Chen · Son · +61 400 221 918</dd>
-                </div>
-                <div>
-                  <dt>Language</dt>
-                  <dd>English</dd>
-                </div>
-              </dl>
-            </section>
-
-            <section class="block intent" aria-labelledby="intent-title">
-              <h3 id="intent-title">Why they called</h3>
-              <p class="intent-lead">
-                IVR captured: request to move Thursday allied health visit to Friday morning.
-              </p>
-              <ul class="intent-tags">
-                <li>Visit change</li>
-                <li>Physiotherapy</li>
-                <li>Same carer preferred</li>
-              </ul>
-            </section>
-
-            <section class="block care" aria-labelledby="care-title">
-              <h3 id="care-title">Care snapshot</h3>
-              <ul class="care-list">
-                <li>
-                  <span>Package balance</span>
-                  <strong>$1,840 remaining this quarter</strong>
-                </li>
-                <li>
-                  <span>Next scheduled visit</span>
-                  <strong>Thu 24 Jul · 10:30 · Physio · Amira K</strong>
-                </li>
-                <li>
-                  <span>Risk flags</span>
-                  <strong>Fall history · Medication support</strong>
-                </li>
-              </ul>
-            </section>
-
-            <section class="block history" aria-labelledby="history-title">
-              <h3 id="history-title">Recent interactions</h3>
-              <ol class="timeline">
-                <li>
-                  <time datetime="2026-07-18">18 Jul</time>
-                  <p>Call · Confirmed Monday personal care · Agent Priya</p>
-                </li>
-                <li>
-                  <time datetime="2026-07-12">12 Jul</time>
-                  <p>Portal · Family asked about transport options</p>
-                </li>
-                <li>
-                  <time datetime="2026-07-03">3 Jul</time>
-                  <p>Visit note · Prefers afternoon appointments after 11am</p>
-                </li>
-              </ol>
-            </section>
+          <!-- Available / idle toolbar (phonePanel) -->
+          <div class="softphone-panel" data-view="available">
+            <div class="phone-toolbar">
+              <label class="presence">
+                <span class="presence-dot available" aria-hidden="true"></span>
+                <select id="presence-select" aria-label="Presence">
+                  <option>Available</option>
+                  <option>Busy</option>
+                  <option>Unavailable</option>
+                </select>
+              </label>
+              <div class="toolbar-actions">
+                <button
+                  type="button"
+                  class="slds-button slds-button_icon"
+                  id="simulate-call"
+                  title="Simulate an incoming call"
+                  aria-label="Simulate an incoming call"
+                >
+                  <span class="icon-call" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="slds-button slds-button_icon" title="Help" aria-label="Help">
+                  <span class="icon-help" aria-hidden="true">?</span>
+                </button>
+              </div>
+            </div>
+            <div class="search-bar">
+              <input type="text" class="slds-input" placeholder="Enter a name or number..." />
+              <button type="button" class="slds-button slds-button_icon slds-button_icon-border" title="Dial pad">
+                <span class="icon-dialpad" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="message-body">Search for a contact</div>
           </div>
 
-          <footer class="next-action">
-            <div>
-              <h3>Suggested next action</h3>
-              <p>
-                Open scheduling, offer Friday 09:30 or 11:00 with Amira, and confirm SMS to Maggie
-                and David.
-              </p>
+          <!-- Incoming call pop (callInitiatedPanel) -->
+          <div class="softphone-panel call-initiated" data-view="incoming" hidden>
+            <div class="slds-panel__section call-initiated__top">
+              <div class="avatar-wrap">
+                <div class="slds-avatar slds-avatar_circle slds-avatar_large" aria-hidden="true">MC</div>
+              </div>
+              <div class="record-name">Margaret Chen</div>
+              <div class="company-details">Care Hub · Adelaide</div>
+              <div class="company-details">Home Care Client</div>
+              <div class="incoming-line">
+                Incoming&nbsp;<span class="phone-number">+61 412 883 204</span>...
+              </div>
+              <div class="ticker" id="incoming-ticker">00:00</div>
             </div>
-            <button type="button" class="btn primary" id="open-schedule">Open scheduling</button>
-          </footer>
-        </article>
-      </section>
-    </main>
+            <div class="bottom-panel">
+              <button type="button" class="slds-button slds-button_destructive" id="decline-call">
+                Decline
+              </button>
+              <button type="button" class="slds-button slds-button_brand" id="accept-call">Accept</button>
+            </div>
+          </div>
+
+          <!-- Connected call (connectedPanel) -->
+          <div class="softphone-panel connected" data-view="connected" hidden>
+            <div class="connected-top">
+              <div class="mini-record">
+                <div class="slds-avatar slds-avatar_circle" aria-hidden="true">MC</div>
+                <div>
+                  <div class="mini-record__name">Margaret Chen</div>
+                  <div class="mini-record__meta">Care Hub · Adelaide · Home Care Client</div>
+                  <div class="mini-record__meta">Inbound Call · +61 412 883 204</div>
+                </div>
+              </div>
+            </div>
+            <div class="connected-mid">
+              <div class="connected-status">
+                <span>Connected: <span id="connected-ticker">00:00</span></span>
+                <button
+                  type="button"
+                  class="slds-button slds-button_icon slds-button_icon-border"
+                  id="toggle-notes"
+                  title="Notes"
+                >
+                  <span class="icon-note" aria-hidden="true"></span>
+                </button>
+              </div>
+              <textarea
+                class="call-note"
+                id="call-note"
+                rows="6"
+                maxlength="32000"
+                placeholder="Enter notes..."
+              ></textarea>
+            </div>
+            <div class="bottom-panel bottom-panel--single">
+              <button type="button" class="slds-button slds-button_destructive" id="end-call">End</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Utility bar -->
+      <footer class="sf-utility">
+        <button type="button" class="sf-utility__item is-active" id="utility-phone" aria-pressed="true">
+          <span class="sf-softphone__phone-icon" aria-hidden="true"></span>
+          Phone
+          <span class="utility-badge" id="utility-badge" hidden>1</span>
+        </button>
+        <button type="button" class="sf-utility__item">Omni-Channel</button>
+        <button type="button" class="sf-utility__item">Notes</button>
+        <div class="sf-utility__spacer"></div>
+        <span class="sf-utility__meta">Sam Nguyen · Available</span>
+      </footer>
+    </div>
 
     <script src="./app.js"></script>
   </body>

@@ -6,21 +6,21 @@ Care teams often answer inbound calls without context. Agents ask for identity a
 
 ## Outcome
 
-At the moment a call connects (ideally while it is still ringing), Care Hub presents:
+Use the Salesforce Voice / Open CTI **out-of-the-box call pop** as the starting UI:
 
-- Who is calling (client identity, preferred name, key contact)
-- Why they called (IVR / voice-bot intent and tags)
-- Care snapshot (package, next visit, risk flags)
-- Recent interactions
-- One suggested next action
+1. Softphone shows inbound call pop (avatar, name, account, title, Incoming + ANI, ticker).
+2. Agent chooses **Accept** or **Decline**.
+3. On Accept, Lightning console screen-pops Voice Call + Contact, and the softphone moves to the connected panel (notes + End).
+
+Care Hub accents (purple brand, orange highlights) replace default Salesforce blue so we can iterate from a familiar Salesforce baseline.
 
 ## Design principles
 
-1. **Context before conversation** — Prefetch from ANI and IVR data so the screen-pop lands before the agent greets.
-2. **One job for the first glance** — Identity + intent + next action; not a full CRM dump.
-3. **Customer-led language** — Prefer the client’s preferred name and care reality over internal codes.
+1. **Start from Salesforce OOTB** — Match the Open CTI `callInitiatedPanel` / `connectedPanel` patterns before customising Care Hub fields.
+2. **Context before conversation** — Prefetch from ANI and IVR data so the record pop lands as the agent accepts.
+3. **Familiar console chrome** — Service Console header, tabs, utility bar, and softphone width (~380px).
 4. **Graceful ambiguity** — When a number matches multiple people, rank by recent activity and show a discriminating detail.
-5. **Actionable close** — Every pop ends with a concrete next step (schedule, escalate, note).
+5. **Build incrementally** — Purple/orange accents first; Care Hub care context layered onto the Voice Call / Contact pages next.
 
 ## Success signals
 
