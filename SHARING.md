@@ -4,7 +4,7 @@
 
 While this cloud agent session is still running, open:
 
-**https://situation-yards-alert-endif.trycloudflare.com**
+**https://wav-debut-mailto-surfing.trycloudflare.com**
 
 This URL stops working when the session ends. Use option A or B below for a lasting link.
 
