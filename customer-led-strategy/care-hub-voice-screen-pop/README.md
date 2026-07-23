@@ -47,3 +47,9 @@ Open `http://localhost:8765`.
 - `app.js` — interactive / guided prototype logic
 - `flows.js` — intent questions, transcripts, record mapping
 - `styles.css` — Salesforce-inspired Care Hub theme
+
+## Share online
+
+See [SHARING.md](SHARING.md) for GitHub Pages and Netlify Drop. After Pages is enabled, the live demo is:
+
+**https://cls3643adt.github.io/customerled/**
