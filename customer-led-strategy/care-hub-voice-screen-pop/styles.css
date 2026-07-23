@@ -20,9 +20,10 @@
   --sf-header-h: 40px;
   --sf-nav-h: 40px;
   --sf-utility-h: 40px;
-  --sf-softphone-w: 320px;
-  --sf-client-nav-w: 300px;
-  --sf-schedule-nav-w: 300px;
+  --sf-softphone-w: 360px;
+  --sf-softphone-h: 520px;
+  --sf-client-nav-w: 320px;
+  --sf-schedule-nav-w: 320px;
   --font: "Salesforce Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -291,7 +292,7 @@ textarea {
 }
 
 .sf-record__grid--agentforce {
-  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.9fr);
+  grid-template-columns: 1fr;
   align-items: start;
 }
 
@@ -472,6 +473,10 @@ textarea {
   box-shadow: inset 0 0 0 2px #fff;
 }
 
+.case-card {
+  max-width: 100%;
+}
+
 .case-banner {
   margin: 0 0 0.75rem;
   padding: 0.55rem 0.65rem;
@@ -479,6 +484,16 @@ textarea {
   border: 1px solid #f5c98a;
   border-radius: 0.25rem;
   color: var(--sf-text-weak);
+}
+
+.case-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem 1rem;
+}
+
+.case-fields > div {
+  grid-template-columns: 6.5rem 1fr;
 }
 
 .case-fields .is-pending,
@@ -518,8 +533,11 @@ textarea {
 }
 
 @media (max-width: 1400px) {
-  .sf-record__grid--agentforce,
   .agentforce-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .case-fields {
     grid-template-columns: 1fr;
   }
 }
@@ -642,16 +660,23 @@ textarea {
   border-radius: 0.35rem;
 }
 
-/* ===== Softphone ===== */
+/* ===== Softphone utility popup (bottom) ===== */
 .sf-softphone {
+  position: fixed;
+  left: 0.5rem;
+  bottom: calc(var(--sf-utility-h) + 0.35rem);
   width: var(--sf-softphone-w);
+  height: var(--sf-softphone-h);
+  max-height: calc(100vh - var(--sf-header-h) - var(--sf-nav-h) - var(--sf-utility-h) - 1rem);
   background: var(--sf-white);
-  border-left: 1px solid var(--sf-border);
+  border: 1px solid var(--sf-border);
+  border-radius: 0.25rem 0.25rem 0 0;
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
-  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.08);
-  z-index: 5;
+  box-shadow: 0 -8px 28px rgba(24, 24, 24, 0.18);
+  z-index: 40;
+  transform-origin: bottom left;
+  animation: softphone-rise 180ms ease-out;
 }
 
 .sf-softphone.is-minimized {
@@ -664,7 +689,8 @@ textarea {
   justify-content: space-between;
   padding: 0.45rem 0.65rem;
   border-bottom: 1px solid var(--sf-border-light);
-  background: var(--sf-shade);
+  background: linear-gradient(90deg, var(--sf-brand-light), var(--sf-white));
+  border-radius: 0.25rem 0.25rem 0 0;
 }
 
 .sf-softphone__title {
@@ -680,6 +706,17 @@ textarea {
   display: inline-block;
   background: var(--sf-brand);
   clip-path: polygon(20% 0%, 45% 0%, 55% 25%, 75% 20%, 100% 45%, 75% 55%, 70% 75%, 45% 100%, 35% 70%, 10% 80%, 0% 55%, 25% 40%);
+}
+
+@keyframes softphone-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .softphone-panel {
@@ -754,7 +791,7 @@ textarea {
 }
 
 .avatar-wrap {
-  margin-top: 18%;
+  margin-top: 8%;
   margin-bottom: 3%;
   display: flex;
   justify-content: center;
@@ -781,10 +818,10 @@ textarea {
 }
 
 .record-name {
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   font-weight: 400;
   color: var(--sf-text-weak);
-  margin-bottom: 8%;
+  margin-bottom: 4%;
 }
 
 .company-details {
@@ -793,7 +830,7 @@ textarea {
 }
 
 .incoming-line {
-  margin-top: 12%;
+  margin-top: 6%;
   color: var(--sf-brand);
   font-size: 0.85rem;
 }
@@ -993,6 +1030,8 @@ textarea {
   gap: 0.15rem;
   padding: 0 0.35rem;
   flex-shrink: 0;
+  position: relative;
+  z-index: 50;
 }
 
 .sf-utility__item {
@@ -1312,15 +1351,11 @@ textarea {
   margin-top: 0.75rem;
 }
 
-.sf-app[data-context="open"] .sf-softphone:not(.is-minimized) {
-  width: var(--sf-softphone-w);
-}
-
 @media (max-width: 1280px) {
   :root {
-    --sf-client-nav-w: 260px;
-    --sf-schedule-nav-w: 260px;
-    --sf-softphone-w: 300px;
+    --sf-client-nav-w: 280px;
+    --sf-schedule-nav-w: 280px;
+    --sf-softphone-w: 340px;
   }
 }
 
@@ -1330,13 +1365,19 @@ textarea {
   }
 
   .sf-client-nav,
-  .sf-schedule-nav,
-  .sf-softphone {
+  .sf-schedule-nav {
     width: 100%;
     border-left: 0;
     border-right: 0;
     border-top: 1px solid var(--sf-border);
-    max-height: 50vh;
+    max-height: 42vh;
+  }
+
+  .sf-softphone {
+    left: 0.5rem;
+    right: 0.5rem;
+    width: auto;
+    height: min(70vh, 560px);
   }
 
   .sf-record__grid {
