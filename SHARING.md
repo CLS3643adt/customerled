@@ -1,9 +1,12 @@
 # Sharing the Care Hub Voice interactive prototype
 
-## Live demo (temporary tunnel)
+## Live demo (temporary public tunnel)
 
-While the agent/demo server is running, a public tunnel URL may be available.
-Prefer a durable host below for lasting access.
+While this cloud agent session is still running, open:
+
+**https://situation-yards-alert-endif.trycloudflare.com**
+
+This URL stops working when the session ends. Use option A or B below for a lasting link.
 
 ## Durable option A — GitHub Pages (recommended once enabled)
 
