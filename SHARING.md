@@ -1,50 +1,38 @@
 # Sharing the Care Hub Voice interactive prototype
 
-## Live demo (temporary public tunnel)
+## Live demo (use this now)
 
-While this cloud agent session is still running, open:
+**https://cls3643adt.github.io/customerled/docs/**
 
-**https://wav-debut-mailto-surfing.trycloudflare.com**
+(GitHub’s default Jekyll workflow published the whole repo, so the prototype currently lives under `/docs/`. After the Care Hub-only workflow redeploys, the cleaner URL below will also work.)
 
-This URL stops working when the session ends. Use option A or B below for a lasting link.
+**Preferred URL after next Care Hub deploy:**  
+https://cls3643adt.github.io/customerled/
 
-## Durable option A — GitHub Pages (recommended once enabled)
+## How to deploy (GitHub Pages)
 
-This repo is prepared to publish from the `/docs` folder.
+1. Open the Actions tab:  
+   https://github.com/CLS3643adt/customerled/actions
+2. In the left sidebar, click **Deploy Care Hub prototype to GitHub Pages**
+3. Click **Run workflow** (right side) → branch **main** → **Run workflow**
+4. Wait until the run is green (about 1 minute)
+5. Open: https://cls3643adt.github.io/customerled/
 
-### Enable in GitHub (one-time)
+### One-time Pages settings (if not already done)
 
-1. Merge PR `#1` into `main` (or keep using this branch — the workflow supports both).
-2. Open the repo: https://github.com/CLS3643adt/customerled
-3. Go to **Settings → Pages**
-4. Under **Build and deployment**:
-   - Source: **GitHub Actions**
-5. Open the **Actions** tab, run **Deploy Care Hub prototype to GitHub Pages** if it did not start automatically.
-6. When green, your site URL will be:
+1. https://github.com/CLS3643adt/customerled/settings/pages  
+2. **Build and deployment → Source:** GitHub Actions  
 
-`https://cls3643adt.github.io/customerled/`
+### Important
 
-> Note: this repository is currently **private**. For anyone on the internet to open the Pages URL without a GitHub login, either:
-> - make the repository **public**, or
-> - use a GitHub plan that supports private GitHub Pages and share access as needed.
+Only keep the **Deploy Care Hub prototype to GitHub Pages** workflow.  
+If GitHub adds **Deploy Jekyll with GitHub Pages…**, delete that workflow file so it does not overwrite the Care Hub site.
 
-### What gets published
+## Alternative — Netlify Drop
 
-Files in `/docs` (copied from `customer-led-strategy/care-hub-voice-screen-pop`).
-
-After editing the prototype source, refresh `/docs` before publish:
-
-```bash
-cp customer-led-strategy/care-hub-voice-screen-pop/{index.html,app.js,flows.js,styles.css} docs/
-cp customer-led-strategy/care-hub-voice-screen-pop/README.md docs/README.md
-```
-
-## Durable option B — Netlify Drop (public in ~30 seconds)
-
-1. Zip or open folder: `customer-led-strategy/care-hub-voice-screen-pop`
+1. Use folder: `customer-led-strategy/care-hub-voice-screen-pop`
 2. Visit https://app.netlify.com/drop
-3. Drop the folder
-4. Share the `*.netlify.app` link
+3. Drop the folder and share the `*.netlify.app` link
 
 ## What to tell viewers
 
