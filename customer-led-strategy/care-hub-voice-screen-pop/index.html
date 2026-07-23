@@ -44,7 +44,7 @@
         </button>
         <button type="button" class="sf-nav__item" data-tab="case" hidden>
           <span class="sf-nav__icon case" aria-hidden="true"></span>
-          Case 00015821
+          <span id="record-tab-label">Case</span>
           <span class="sf-nav__close" data-close-tab="case" title="Close">×</span>
         </button>
         <button type="button" class="sf-nav__item" data-tab="contact" hidden>
@@ -170,10 +170,20 @@
                 purple and orange accents.
               </p>
               <ol class="sf-steps">
-                <li>Open the <strong>Phone</strong> utility in the footer (pops up from the bottom).</li>
-                <li>Click the phone icon to simulate an inbound call.</li>
-                <li>Click <strong>Accept</strong> for a three-column workspace: client card, Agentforce + case, and visits.</li>
+                <li>Open <strong>Phone</strong> (bottom utility) and choose an IVR intent flow.</li>
+                <li>Simulate the inbound call, then <strong>Accept</strong>.</li>
+                <li>Agentforce guides questions and auto-creates the Case or Lead for that intent.</li>
               </ol>
+              <div class="intent-legend">
+                <p>Five Agentforce question flows:</p>
+                <ul>
+                  <li><strong>Visit change</strong> — cancel / reschedule → Case</li>
+                  <li><strong>SC worker sick</strong> — leave hours for manager approval → Case + task</li>
+                  <li><strong>General lead enquiry</strong> — new Lead (client, services, funding)</li>
+                  <li><strong>Finance &amp; billing</strong> — invoice / payment enquiry → Case</li>
+                  <li><strong>Complaint / feedback</strong> — quality case → Case</li>
+                </ul>
+              </div>
             </div>
           </section>
 
@@ -199,13 +209,18 @@
                     </div>
                     <div>
                       <span>IVR Intent</span>
-                      <strong>Visit change</strong>
+                      <strong id="voice-intent-label">Visit change</strong>
                     </div>
                   </div>
                 </div>
                 <div class="sf-highlights__actions">
-                  <span class="pill pill--accent" id="case-created-pill" hidden>Case 00015821 created</span>
+                  <span class="pill pill--accent" id="case-created-pill" hidden>Case created</span>
                 </div>
+              </div>
+
+              <div class="intent-switcher" id="intent-switcher" aria-label="Question flow">
+                <span class="intent-switcher__label">Question flow</span>
+                <div class="intent-switcher__options" id="intent-options"></div>
               </div>
 
               <div class="sf-record__grid sf-record__grid--agentforce">
@@ -226,59 +241,15 @@
                       <h3>Call transcript</h3>
                       <ol class="transcript" id="transcript-list"></ol>
                       <p class="transcript-empty" id="transcript-empty">
-                        Waiting for speech… Agentforce will transcribe the call and map answers into the case.
+                        Waiting for speech… Agentforce will transcribe the call and map answers into the
+                        record.
                       </p>
                     </div>
 
                     <div class="guide-panel">
                       <h3>Ask these questions</h3>
-                      <p class="guide-intro">
-                        Visit Change IVR flow — capture these fields so Case <strong>00015821</strong> is complete.
-                      </p>
-                      <ol class="question-list" id="question-list">
-                        <li data-question="visit" class="is-current">
-                          <span class="q-status" aria-hidden="true"></span>
-                          <div>
-                            <strong>Which visit needs to change?</strong>
-                            <p>Confirm service, date, and assigned worker</p>
-                          </div>
-                        </li>
-                        <li data-question="reason">
-                          <span class="q-status" aria-hidden="true"></span>
-                          <div>
-                            <strong>What is the reason for the change?</strong>
-                            <p>Client / family / clinical / worker unavailable</p>
-                          </div>
-                        </li>
-                        <li data-question="preference">
-                          <span class="q-status" aria-hidden="true"></span>
-                          <div>
-                            <strong>Preferred new day and time?</strong>
-                            <p>Offer options that keep preferred carer where possible</p>
-                          </div>
-                        </li>
-                        <li data-question="worker">
-                          <span class="q-status" aria-hidden="true"></span>
-                          <div>
-                            <strong>Same worker required?</strong>
-                            <p>Amira Khan preferred for physio</p>
-                          </div>
-                        </li>
-                        <li data-question="notify">
-                          <span class="q-status" aria-hidden="true"></span>
-                          <div>
-                            <strong>Who should be notified?</strong>
-                            <p>Client SMS / household contact / care partner</p>
-                          </div>
-                        </li>
-                        <li data-question="risk">
-                          <span class="q-status" aria-hidden="true"></span>
-                          <div>
-                            <strong>Any risk or access notes for the new visit?</strong>
-                            <p>Falls, medication timing, key safe, etc.</p>
-                          </div>
-                        </li>
-                      </ol>
+                      <p class="guide-intro" id="guide-intro">Select an intent flow to load questions.</p>
+                      <ol class="question-list" id="question-list"></ol>
                     </div>
                   </div>
                 </article>
@@ -286,55 +257,15 @@
                 <article class="sf-card case-card" id="case-card">
                   <header class="sf-card__header">
                     <div>
-                      Auto-created Case
+                      <span id="record-card-title">Auto-created Case</span>
                       <span class="pill pill--ok" id="case-status-pill">New</span>
                     </div>
                     <button type="button" class="slds-button slds-button_brand" data-tab-jump="case">
-                      Open case
+                      Open record
                     </button>
                   </header>
-                  <p class="case-banner" id="case-banner">
-                    IVR intent <strong>Visit change</strong> created Case <strong>00015821</strong> and linked it to
-                    Voice Call VC-000482 and Contact Margaret Chen.
-                  </p>
-                  <dl class="sf-dl case-fields" id="case-fields">
-                    <div><dt>Case Number</dt><dd>00015821</dd></div>
-                    <div><dt>Type</dt><dd>Visit Change</dd></div>
-                    <div><dt>Priority</dt><dd>Medium</dd></div>
-                    <div><dt>Origin</dt><dd>Phone · IVR</dd></div>
-                    <div>
-                      <dt>Subject</dt>
-                      <dd data-field="subject">Visit change — pending details</dd>
-                    </div>
-                    <div>
-                      <dt>Visit</dt>
-                      <dd data-field="visit" class="is-pending">Awaiting answer…</dd>
-                    </div>
-                    <div>
-                      <dt>Reason</dt>
-                      <dd data-field="reason" class="is-pending">Awaiting answer…</dd>
-                    </div>
-                    <div>
-                      <dt>Preferred slot</dt>
-                      <dd data-field="preference" class="is-pending">Awaiting answer…</dd>
-                    </div>
-                    <div>
-                      <dt>Worker</dt>
-                      <dd data-field="worker" class="is-pending">Awaiting answer…</dd>
-                    </div>
-                    <div>
-                      <dt>Notify</dt>
-                      <dd data-field="notify" class="is-pending">Awaiting answer…</dd>
-                    </div>
-                    <div>
-                      <dt>Risk / access</dt>
-                      <dd data-field="risk" class="is-pending">Awaiting answer…</dd>
-                    </div>
-                    <div>
-                      <dt>Description</dt>
-                      <dd data-field="description" class="is-pending">Built from transcript…</dd>
-                    </div>
-                  </dl>
+                  <p class="case-banner" id="case-banner">Choose an IVR intent to create the related record.</p>
+                  <dl class="sf-dl case-fields" id="case-fields"></dl>
                 </article>
               </div>
             </div>
@@ -345,8 +276,8 @@
               <div class="sf-highlights sf-highlights--case">
                 <div class="sf-highlights__icon case" aria-hidden="true"></div>
                 <div class="sf-highlights__body">
-                  <p class="sf-highlights__type">Case</p>
-                  <h2>00015821 · Visit change for Margaret Chen</h2>
+                  <p class="sf-highlights__type" id="case-page-type-label">Case</p>
+                  <h2 id="case-page-title">Record</h2>
                   <div class="sf-highlights__fields">
                     <div>
                       <span>Status</span>
@@ -354,11 +285,11 @@
                     </div>
                     <div>
                       <span>Type</span>
-                      <strong>Visit Change</strong>
+                      <strong id="case-page-record-label">—</strong>
                     </div>
                     <div>
-                      <span>Contact</span>
-                      <strong>Margaret Chen</strong>
+                      <span>Owner</span>
+                      <strong id="case-page-owner">—</strong>
                     </div>
                     <div>
                       <span>Voice Call</span>
@@ -375,27 +306,15 @@
               </div>
               <div class="sf-record__grid">
                 <article class="sf-card">
-                  <header class="sf-card__header">Case Details</header>
-                  <dl class="sf-dl" id="case-page-fields">
-                    <div><dt>Subject</dt><dd data-field="subject">Visit change — pending details</dd></div>
-                    <div><dt>Visit</dt><dd data-field="visit" class="is-pending">Awaiting answer…</dd></div>
-                    <div><dt>Reason</dt><dd data-field="reason" class="is-pending">Awaiting answer…</dd></div>
-                    <div><dt>Preferred slot</dt><dd data-field="preference" class="is-pending">Awaiting answer…</dd></div>
-                    <div><dt>Worker</dt><dd data-field="worker" class="is-pending">Awaiting answer…</dd></div>
-                    <div><dt>Notify</dt><dd data-field="notify" class="is-pending">Awaiting answer…</dd></div>
-                    <div><dt>Risk / access</dt><dd data-field="risk" class="is-pending">Awaiting answer…</dd></div>
-                  </dl>
+                  <header class="sf-card__header">Captured details</header>
+                  <dl class="sf-dl" id="case-page-fields"></dl>
                 </article>
                 <article class="sf-card">
                   <header class="sf-card__header">Agentforce summary</header>
                   <p id="case-summary" class="case-summary is-pending">
                     Summary will appear as transcript answers are captured.
                   </p>
-                  <ul class="sf-list" id="case-next-steps">
-                    <li>Confirm Fri slot with Amira in scheduling</li>
-                    <li>Send SMS to Maggie and David</li>
-                    <li>Update care partner Jordan Lee</li>
-                  </ul>
+                  <ul class="sf-list" id="case-next-steps"></ul>
                 </article>
               </div>
             </div>
@@ -594,26 +513,32 @@
                 </button>
               </div>
             </div>
+            <div class="ivr-picker">
+              <p class="ivr-picker__label">IVR intent for next call</p>
+              <div class="ivr-picker__options" id="softphone-intent-options"></div>
+            </div>
             <div class="search-bar">
               <input type="text" class="slds-input" placeholder="Enter a name or number..." />
               <button type="button" class="slds-button slds-button_icon slds-button_icon-border" title="Dial pad">
                 <span class="icon-dialpad" aria-hidden="true"></span>
               </button>
             </div>
-            <div class="message-body">Search for a contact</div>
+            <div class="message-body">Select an intent, then simulate an incoming call</div>
           </div>
 
           <!-- Incoming call pop (callInitiatedPanel) -->
           <div class="softphone-panel call-initiated" data-view="incoming" hidden>
             <div class="slds-panel__section call-initiated__top">
               <div class="avatar-wrap">
-                <div class="slds-avatar slds-avatar_circle slds-avatar_large" aria-hidden="true">MC</div>
+                <div class="slds-avatar slds-avatar_circle slds-avatar_large" id="incoming-avatar" aria-hidden="true">
+                  MC
+                </div>
               </div>
-              <div class="record-name">Margaret Chen</div>
-              <div class="company-details">Care Hub · Adelaide</div>
-              <div class="company-details">Home Care Client</div>
+              <div class="record-name" id="incoming-name">Margaret Chen</div>
+              <div class="company-details" id="incoming-role">Care Hub · Client</div>
+              <div class="company-details" id="incoming-intent">Visit change</div>
               <div class="incoming-line">
-                Incoming&nbsp;<span class="phone-number">+61 412 883 204</span>...
+                Incoming&nbsp;<span class="phone-number" id="incoming-phone">+61 412 883 204</span>...
               </div>
               <div class="ticker" id="incoming-ticker">00:00</div>
             </div>
@@ -629,11 +554,11 @@
           <div class="softphone-panel connected" data-view="connected" hidden>
             <div class="connected-top">
               <div class="mini-record">
-                <div class="slds-avatar slds-avatar_circle" aria-hidden="true">MC</div>
+                <div class="slds-avatar slds-avatar_circle" id="connected-avatar" aria-hidden="true">MC</div>
                 <div>
-                  <div class="mini-record__name">Margaret Chen</div>
-                  <div class="mini-record__meta">Care Hub · Adelaide · Home Care Client</div>
-                  <div class="mini-record__meta">Inbound Call · +61 412 883 204</div>
+                  <div class="mini-record__name" id="connected-name">Margaret Chen</div>
+                  <div class="mini-record__meta" id="connected-role">Care Hub · Client</div>
+                  <div class="mini-record__meta" id="connected-intent">Inbound · Visit change</div>
                 </div>
               </div>
             </div>
@@ -677,6 +602,7 @@
       </footer>
     </div>
 
+    <script src="./flows.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>
