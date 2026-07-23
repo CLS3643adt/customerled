@@ -162,28 +162,41 @@
         <!-- Main workspace -->
         <main class="sf-workspace">
           <section class="sf-page" data-page="home">
-            <div class="sf-card">
-              <h1>Care Hub Voice</h1>
-              <p>
-                Starting point: Salesforce out-of-the-box Open CTI
-                <strong>call pop</strong> softphone template (Accept / Decline), with Care Hub
-                purple and orange accents.
-              </p>
-              <ol class="sf-steps">
-                <li>Open <strong>Phone</strong> (bottom utility) and choose an IVR intent flow.</li>
-                <li>Simulate the inbound call, then <strong>Accept</strong>.</li>
-                <li>Agentforce guides questions and auto-creates the Case or Lead for that intent.</li>
-              </ol>
-              <div class="intent-legend">
-                <p>Five Agentforce question flows:</p>
-                <ul>
-                  <li><strong>Visit change</strong> — cancel / reschedule → Case</li>
-                  <li><strong>SC worker sick</strong> — leave hours for manager approval → Case + task</li>
-                  <li><strong>General lead enquiry</strong> — new Lead (client, services, funding)</li>
-                  <li><strong>Finance &amp; billing</strong> — invoice / payment enquiry → Case</li>
-                  <li><strong>Complaint / feedback</strong> — quality case → Case</li>
-                </ul>
+            <div class="demo-hub">
+              <div class="sf-card demo-hero">
+                <p class="demo-kicker">Interactive prototype</p>
+                <h1>Care Hub Voice · process flows</h1>
+                <p>
+                  Demonstrate Salesforce Voice screen-pop, Agentforce guided capture, and
+                  auto-created Case / Lead outcomes. Choose a scenario, run it interactively, then
+                  adapt the same pattern for your organisation.
+                </p>
+                <div class="demo-modes">
+                  <button type="button" class="mode-chip is-active" data-demo-mode="interactive">
+                    Interactive capture
+                  </button>
+                  <button type="button" class="mode-chip" data-demo-mode="guided">
+                    Guided auto-play
+                  </button>
+                </div>
+                <p class="demo-mode-help" id="demo-mode-help">
+                  Interactive: you step through each question and select answers. Guided: Agentforce
+                  auto-plays the transcript.
+                </p>
               </div>
+
+              <div class="process-map sf-card" aria-label="Target process flow">
+                <h2>Target process flow</h2>
+                <ol class="process-steps" id="home-process-steps">
+                  <li data-step="select"><span>1</span><strong>Select intent</strong><em>IVR / scenario</em></li>
+                  <li data-step="pop"><span>2</span><strong>Screen pop</strong><em>Client + softphone</em></li>
+                  <li data-step="capture"><span>3</span><strong>Capture</strong><em>Ask &amp; confirm</em></li>
+                  <li data-step="record"><span>4</span><strong>Create record</strong><em>Case or Lead</em></li>
+                  <li data-step="next"><span>5</span><strong>Next actions</strong><em>Route &amp; follow up</em></li>
+                </ol>
+              </div>
+
+              <div class="scenario-grid" id="scenario-grid"></div>
             </div>
           </section>
 
@@ -218,6 +231,14 @@
                 </div>
               </div>
 
+              <div class="process-strip" id="process-strip" aria-label="Live process steps">
+                <div class="process-strip__item is-done" data-live-step="select"><span>1</span> Intent</div>
+                <div class="process-strip__item is-active" data-live-step="pop"><span>2</span> Screen pop</div>
+                <div class="process-strip__item" data-live-step="capture"><span>3</span> Capture</div>
+                <div class="process-strip__item" data-live-step="record"><span>4</span> Record</div>
+                <div class="process-strip__item" data-live-step="next"><span>5</span> Next actions</div>
+              </div>
+
               <div class="intent-switcher" id="intent-switcher" aria-label="Question flow">
                 <span class="intent-switcher__label">Question flow</span>
                 <div class="intent-switcher__options" id="intent-options"></div>
@@ -232,7 +253,10 @@
                       <span class="live-label">Live transcription</span>
                     </div>
                     <button type="button" class="slds-button slds-button_neutral" id="replay-transcript">
-                      Replay demo
+                      Replay guided
+                    </button>
+                    <button type="button" class="slds-button slds-button_brand" id="capture-next">
+                      Capture next answer
                     </button>
                   </header>
 
@@ -250,6 +274,10 @@
                       <h3>Ask these questions</h3>
                       <p class="guide-intro" id="guide-intro">Select an intent flow to load questions.</p>
                       <ol class="question-list" id="question-list"></ol>
+                      <div class="answer-panel" id="answer-panel" hidden>
+                        <h4 id="answer-panel-title">Select an answer to capture</h4>
+                        <div class="answer-choices" id="answer-choices"></div>
+                      </div>
                     </div>
                   </div>
                 </article>
@@ -473,6 +501,20 @@
             </div>
           </section>
         </aside>
+      </div>
+
+      <!-- Facilitator control bar -->
+      <div class="facilitator-bar" id="facilitator-bar" role="region" aria-label="Prototype facilitator controls">
+        <div class="facilitator-bar__status">
+          <strong id="facilitator-mode-label">Mode · Interactive</strong>
+          <span id="facilitator-step-label">Ready to start a scenario</span>
+        </div>
+        <div class="facilitator-bar__actions">
+          <button type="button" class="slds-button slds-button_neutral" id="fac-home">Demo hub</button>
+          <button type="button" class="slds-button slds-button_neutral" id="fac-reset">Reset</button>
+          <button type="button" class="slds-button slds-button_neutral" id="fac-toggle-mode">Switch to guided</button>
+          <button type="button" class="slds-button slds-button_brand" id="fac-next">Start / next step</button>
+        </div>
       </div>
 
       <!-- Open CTI softphone — utility bar popup from bottom -->

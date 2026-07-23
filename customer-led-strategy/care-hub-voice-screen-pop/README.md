@@ -1,46 +1,49 @@
-# Care Hub · Voice Screen-Pop (Salesforce template)
+# Care Hub · Interactive Voice Prototype
 
-Care Hub inbound voice screen-pop built on the **Salesforce Open CTI out-of-the-box call pop** softphone template, with Agentforce for Voice question flows and auto-created Case / Lead records.
+Interactive Salesforce Voice + Agentforce prototype for Care Hub process flows.
+Use it to demonstrate capabilities, walk stakeholders through capture steps, then adapt the same patterns.
 
 ## Path
 
 `customer-led-strategy/care-hub-voice-screen-pop`
 
-## Design baseline
-
-- Salesforce Lightning Service Console chrome (three columns)
-- Softphone as a **bottom utility popup** (Phone in the footer)
-- Agentforce live transcription + guided questions per IVR intent
-- Care Hub accents: **purple** brand + **orange** highlights
-
-## Open the prototype
+## How to present
 
 ```bash
 python3 -m http.server 8765 --directory .
 ```
 
-Visit `http://localhost:8765`.
+Open `http://localhost:8765`.
 
-## Demo flow
+### Facilitator controls (bottom purple bar)
 
-1. Open **Phone** from the footer utility bar.
-2. Choose an **IVR intent** question flow in the softphone.
-3. Simulate the inbound call, then **Accept**.
-4. Three-column console opens; Agentforce maps answers into the auto-created record.
-5. Switch flows from the Voice Call **Question flow** chips to replay another demo.
+- **Interactive capture** (default): click questions / answers, or use **Capture next answer**
+- **Guided auto-play**: Agentforce plays the transcript automatically
+- **Start demo** on a scenario card: launches call → screen pop → capture
+- **Start / next step**: advances the target process flow
+- **Reset / Demo hub**: return to scenario selection
 
-### Intent flows
+### Target process flow
 
-| Intent | Record created | Focus |
+1. Select intent  
+2. Screen pop  
+3. Capture answers  
+4. Create Case / Lead  
+5. Next actions  
+
+### Scenarios
+
+| Scenario | Record | Demo focus |
 | --- | --- | --- |
-| Visit change | Case | Cancel / reschedule visit details |
-| SC worker sick | Case (+ manager approval task) | Leave hours, impacted visits, coverage |
-| General lead enquiry | Lead | Enquirer, client, services, funding |
-| Finance & billing | Case | Invoice / payment issue and resolution |
-| Complaint / feedback | Case | Category, impact, desired outcome |
+| Visit change | Case | Cancel / reschedule |
+| SC worker sick | Case (+ manager approval) | Leave hours & coverage |
+| General lead enquiry | Lead | Enquirer, services, funding |
+| Finance & billing | Case | Invoice / payment issue |
+| Complaint / feedback | Case | Impact & desired outcome |
 
-## Docs
+## Files
 
-- [Brief](./docs/brief.md)
-- [Call journey](./docs/call-journey.md)
-- [Intent flows](./flows.js)
+- `index.html` — console + demo hub UI
+- `app.js` — interactive / guided prototype logic
+- `flows.js` — intent questions, transcripts, record mapping
+- `styles.css` — Salesforce-inspired Care Hub theme
