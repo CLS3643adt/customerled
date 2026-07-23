@@ -20,7 +20,9 @@
   --sf-header-h: 40px;
   --sf-nav-h: 40px;
   --sf-utility-h: 40px;
-  --sf-softphone-w: 380px;
+  --sf-softphone-w: 320px;
+  --sf-client-nav-w: 300px;
+  --sf-schedule-nav-w: 300px;
   --font: "Salesforce Sans", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -277,6 +279,10 @@ textarea {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
   margin-top: 0.75rem;
+}
+
+.sf-record__grid--single {
+  grid-template-columns: 1fr;
 }
 
 .sf-dl {
@@ -788,16 +794,301 @@ textarea {
   font-size: 0.75rem;
 }
 
+/* ===== Left / right Care Hub navigation panels ===== */
+.sf-client-nav,
+.sf-schedule-nav {
+  width: var(--sf-client-nav-w);
+  background: var(--sf-white);
+  border-right: 1px solid var(--sf-border);
+  overflow: auto;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sf-schedule-nav {
+  width: var(--sf-schedule-nav-w);
+  border-right: 0;
+  border-left: 1px solid var(--sf-border);
+}
+
+.sf-client-nav[hidden],
+.sf-schedule-nav[hidden] {
+  display: none !important;
+}
+
+.side-nav__header {
+  padding: 0.75rem 0.85rem 0.55rem;
+  border-bottom: 1px solid var(--sf-border-light);
+  background: var(--sf-shade);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.side-nav__eyebrow {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--sf-brand);
+}
+
+.side-nav__header h2 {
+  margin: 0.15rem 0 0;
+  font-size: 1rem;
+}
+
+.client-card,
+.schedule-panel {
+  padding: 0.75rem 0.85rem 1rem;
+}
+
+.client-card__identity {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--sf-border-light);
+  margin-bottom: 0.75rem;
+}
+
+.client-card__identity .slds-avatar_large {
+  width: 3.25rem;
+  height: 3.25rem;
+  font-size: 0.95rem;
+  box-shadow: 0 0 0 2px var(--sf-accent);
+  flex-shrink: 0;
+}
+
+.client-card__name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.client-card__meta {
+  margin: 0.1rem 0 0;
+  color: var(--sf-text-weak);
+}
+
+.client-card__section {
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--sf-border-light);
+}
+
+.client-card__section:last-child {
+  border-bottom: 0;
+}
+
+.client-card__section h3,
+.schedule-panel__footer h3 {
+  margin: 0 0 0.55rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--sf-text-weak);
+}
+
+.sf-dl--stack div {
+  grid-template-columns: 6.5rem 1fr;
+  gap: 0.35rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.35rem;
+  padding: 0.12rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: var(--sf-shade);
+  color: var(--sf-text-weak);
+}
+
+.pill--ok {
+  background: #eaf5ee;
+  color: var(--sf-success);
+}
+
+.pill--accent {
+  background: var(--sf-accent-light);
+  color: var(--sf-accent-dark);
+  margin-top: 0;
+}
+
+.risk-list,
+.contact-list,
+.visit-list,
+.preferred-workers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.risk {
+  display: grid;
+  grid-template-columns: 3.4rem 1fr;
+  gap: 0.45rem;
+  align-items: start;
+}
+
+.risk p,
+.person-row p,
+.contact-list p,
+.visit-card p,
+.preferred-workers p,
+.worker-chip span {
+  margin: 0.1rem 0 0;
+  color: var(--sf-text-weak);
+  font-size: 0.75rem;
+}
+
+.risk__label {
+  display: inline-flex;
+  justify-content: center;
+  padding: 0.15rem 0.25rem;
+  border-radius: 0.2rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.risk--high .risk__label {
+  background: #fddde3;
+  color: var(--sf-destructive);
+}
+
+.risk--med .risk__label {
+  background: var(--sf-accent-light);
+  color: var(--sf-accent-dark);
+}
+
+.risk--low .risk__label {
+  background: var(--sf-brand-light);
+  color: var(--sf-brand-dark);
+}
+
+.person-row,
+.contact-list li,
+.preferred-workers li,
+.worker-chip {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+}
+
+.contact-list li {
+  align-items: center;
+}
+
+.contact-list .slds-avatar,
+.person-row .slds-avatar,
+.preferred-workers .slds-avatar,
+.worker-chip .slds-avatar {
+  width: 1.85rem;
+  height: 1.85rem;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+  background: var(--sf-brand);
+}
+
+.visit-card {
+  display: grid;
+  grid-template-columns: 4.4rem 1fr;
+  gap: 0.55rem;
+  border: 1px solid var(--sf-border-light);
+  border-radius: 0.25rem;
+  background: var(--sf-white);
+  overflow: hidden;
+}
+
+.visit-card--next {
+  border-color: var(--sf-accent);
+  box-shadow: inset 3px 0 0 var(--sf-accent);
+}
+
+.visit-card__when {
+  background: var(--sf-shade);
+  padding: 0.55rem 0.4rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  justify-content: center;
+}
+
+.visit-card__day {
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--sf-brand);
+}
+
+.visit-card__when span:last-child {
+  font-size: 0.68rem;
+  color: var(--sf-text-weak);
+}
+
+.visit-card__body {
+  padding: 0.55rem 0.6rem 0.65rem;
+}
+
+.visit-card__body .pill {
+  margin-bottom: 0.25rem;
+}
+
+.worker-chip {
+  margin-top: 0.45rem;
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--sf-border-light);
+  align-items: center;
+}
+
+.worker-chip .slds-avatar {
+  background: var(--sf-accent);
+}
+
+.schedule-panel__footer {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--sf-border-light);
+}
+
+.slds-button_stretch {
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
+.sf-app[data-context="open"] .sf-softphone:not(.is-minimized) {
+  width: var(--sf-softphone-w);
+}
+
+@media (max-width: 1280px) {
+  :root {
+    --sf-client-nav-w: 260px;
+    --sf-schedule-nav-w: 260px;
+    --sf-softphone-w: 300px;
+  }
+}
+
 @media (max-width: 960px) {
   .sf-body {
     flex-direction: column;
   }
 
+  .sf-client-nav,
+  .sf-schedule-nav,
   .sf-softphone {
     width: 100%;
     border-left: 0;
+    border-right: 0;
     border-top: 1px solid var(--sf-border);
-    max-height: 55vh;
+    max-height: 50vh;
   }
 
   .sf-record__grid {

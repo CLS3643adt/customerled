@@ -29,7 +29,11 @@ Visit `http://localhost:8765`.
 1. Softphone is open on the right (Phone utility).
 2. Click the phone icon in the softphone toolbar to simulate an inbound call.
 3. Review the OOTB-style call pop, then click **Accept**.
-4. Console opens Voice Call / Contact tabs; softphone switches to Connected.
+4. Console opens:
+   - **Left:** Health Hub client card (key info, risks, care partner, household contacts)
+   - **Centre:** Voice Call / Contact workspace tabs
+   - **Right:** Next client visits with worker assigned + preferred workers
+   - Softphone switches to Connected (notes + End)
 
 ## Docs
 

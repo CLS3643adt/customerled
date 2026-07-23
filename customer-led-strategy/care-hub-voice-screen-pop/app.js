@@ -1,6 +1,8 @@
 (() => {
   const app = document.querySelector(".sf-app");
   const softphone = document.querySelector(".sf-softphone");
+  const clientNav = document.getElementById("client-nav");
+  const scheduleNav = document.getElementById("schedule-nav");
   const views = {
     available: document.querySelector('[data-view="available"]'),
     incoming: document.querySelector('[data-view="incoming"]'),
@@ -24,6 +26,7 @@
   const utilityPhone = document.getElementById("utility-phone");
   const utilityBadge = document.getElementById("utility-badge");
   const minimizeBtn = document.getElementById("softphone-minimize");
+  const openScheduling = document.getElementById("open-scheduling");
   const incomingTicker = document.getElementById("incoming-ticker");
   const connectedTicker = document.getElementById("connected-ticker");
   const voiceStatus = document.getElementById("voice-status");
@@ -59,6 +62,12 @@
     }, 250);
   };
 
+  const setContextPanels = (open) => {
+    if (clientNav) clientNav.hidden = !open;
+    if (scheduleNav) scheduleNav.hidden = !open;
+    app.dataset.context = open ? "open" : "closed";
+  };
+
   const setSoftphoneView = (view) => {
     softphone.dataset.panel = view;
     Object.entries(views).forEach(([key, node]) => {
@@ -74,11 +83,7 @@
     activeTab = name;
     Object.entries(tabs).forEach(([key, tab]) => {
       if (!tab) return;
-      const isTarget = key === name;
-      tab.setAttribute("aria-pressed", String(isTarget));
-      if (key !== "home") {
-        // keep visibility managed separately
-      }
+      tab.setAttribute("aria-pressed", String(key === name));
     });
     Object.entries(pages).forEach(([key, page]) => {
       if (!page) return;
@@ -101,15 +106,11 @@
   const setPresenceVisual = () => {
     if (!presenceDot || !presenceSelect) return;
     const value = presenceSelect.value;
-    presenceDot.classList.remove("available", "busy", "unavailable");
     if (value === "Busy") {
-      presenceDot.classList.add("busy");
       presenceDot.style.background = "var(--sf-accent)";
     } else if (value === "Unavailable") {
-      presenceDot.classList.add("unavailable");
       presenceDot.style.background = "var(--sf-destructive)";
     } else {
-      presenceDot.classList.add("available");
       presenceDot.style.background = "var(--sf-success)";
     }
   };
@@ -127,6 +128,7 @@
     setSoftphoneView("connected");
     startTicker(connectedTicker);
     openWorkspaceTabs();
+    setContextPanels(true);
     if (voiceStatus) voiceStatus.textContent = "in-progress";
   });
 
@@ -135,6 +137,7 @@
     stopTicker();
     setSoftphoneView("available");
     closeWorkspaceTabs();
+    setContextPanels(false);
   });
 
   endBtn?.addEventListener("click", () => {
@@ -142,6 +145,15 @@
     stopTicker();
     setSoftphoneView("available");
     if (voiceStatus) voiceStatus.textContent = "completed";
+  });
+
+  openScheduling?.addEventListener("click", () => {
+    openScheduling.textContent = "Scheduling opened";
+    openScheduling.disabled = true;
+    window.setTimeout(() => {
+      openScheduling.textContent = "Open scheduling";
+      openScheduling.disabled = false;
+    }, 1600);
   });
 
   utilityPhone?.addEventListener("click", () => {
@@ -175,5 +187,6 @@
   presenceSelect?.addEventListener("change", setPresenceVisual);
   setPresenceVisual();
   setSoftphoneView("available");
+  setContextPanels(false);
   showTab("home");
 })();
