@@ -211,6 +211,11 @@ textarea {
   background: #0b827c;
 }
 
+.sf-nav__icon.case {
+  background: var(--sf-accent);
+  border-radius: 0.2rem;
+}
+
 .sf-nav__close {
   margin-left: 0.25rem;
   opacity: 0.65;
@@ -283,6 +288,240 @@ textarea {
 
 .sf-record__grid--single {
   grid-template-columns: 1fr;
+}
+
+.sf-record__grid--agentforce {
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.9fr);
+  align-items: start;
+}
+
+.agentforce-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.agentforce-header > div {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.agentforce-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  background: linear-gradient(90deg, var(--sf-brand), #8a4fd1);
+  color: var(--sf-white);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.live-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--sf-destructive);
+  box-shadow: 0 0 0 0 rgba(186, 5, 23, 0.45);
+  animation: ready 1.4s ease-out infinite;
+}
+
+.live-label {
+  color: var(--sf-text-weak);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.agentforce-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(220px, 0.9fr);
+  gap: 0.85rem;
+}
+
+.transcript-panel,
+.guide-panel {
+  border: 1px solid var(--sf-border-light);
+  border-radius: 0.25rem;
+  background: var(--sf-shade);
+  padding: 0.7rem;
+  min-height: 22rem;
+}
+
+.transcript-panel h3,
+.guide-panel h3 {
+  margin: 0 0 0.55rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--sf-text-weak);
+}
+
+.transcript {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+  max-height: 20rem;
+  overflow: auto;
+}
+
+.transcript li {
+  background: var(--sf-white);
+  border: 1px solid var(--sf-border-light);
+  border-radius: 0.25rem;
+  padding: 0.55rem 0.65rem;
+  animation: fade-in 220ms ease;
+}
+
+.transcript .speaker {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.2rem;
+}
+
+.transcript .speaker.agent {
+  color: var(--sf-brand);
+}
+
+.transcript .speaker.client {
+  color: var(--sf-accent-dark);
+}
+
+.transcript .speaker.system {
+  color: var(--sf-success);
+}
+
+.transcript-empty {
+  margin: 2rem 0 0;
+  color: var(--sf-text-weak);
+  text-align: center;
+}
+
+.transcript-empty[hidden] {
+  display: none !important;
+}
+
+.guide-intro {
+  margin: 0 0 0.7rem;
+  color: var(--sf-text-weak);
+  font-size: 0.78rem;
+}
+
+.question-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.question-list li {
+  display: grid;
+  grid-template-columns: 1.1rem 1fr;
+  gap: 0.5rem;
+  align-items: start;
+  padding: 0.45rem 0.5rem;
+  border-radius: 0.25rem;
+  background: var(--sf-white);
+  border: 1px solid var(--sf-border-light);
+  opacity: 0.72;
+}
+
+.question-list li.is-current {
+  opacity: 1;
+  border-color: var(--sf-brand);
+  box-shadow: inset 3px 0 0 var(--sf-brand);
+}
+
+.question-list li.is-done {
+  opacity: 1;
+  border-color: #b7dfc4;
+  background: #f3faf5;
+}
+
+.question-list p {
+  margin: 0.15rem 0 0;
+  color: var(--sf-text-weak);
+  font-size: 0.75rem;
+}
+
+.q-status {
+  width: 0.85rem;
+  height: 0.85rem;
+  margin-top: 0.15rem;
+  border-radius: 50%;
+  border: 2px solid var(--sf-border);
+  background: var(--sf-white);
+}
+
+.question-list li.is-current .q-status {
+  border-color: var(--sf-brand);
+  background: var(--sf-brand-light);
+}
+
+.question-list li.is-done .q-status {
+  border-color: var(--sf-success);
+  background: var(--sf-success);
+  box-shadow: inset 0 0 0 2px #fff;
+}
+
+.case-banner {
+  margin: 0 0 0.75rem;
+  padding: 0.55rem 0.65rem;
+  background: var(--sf-accent-light);
+  border: 1px solid #f5c98a;
+  border-radius: 0.25rem;
+  color: var(--sf-text-weak);
+}
+
+.case-fields .is-pending,
+#case-page-fields .is-pending,
+.case-summary.is-pending {
+  color: #8a8681;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.case-card .sf-card__header,
+.agentforce-card .sf-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.case-summary {
+  margin: 0 0 0.75rem;
+  color: var(--sf-text-weak);
+}
+
+#case-created-pill[hidden] {
+  display: none !important;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 1400px) {
+  .sf-record__grid--agentforce,
+  .agentforce-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 .sf-dl {
@@ -392,6 +631,15 @@ textarea {
 
 .sf-highlights--contact {
   border-top: 3px solid var(--sf-brand);
+}
+
+.sf-highlights--case {
+  border-top: 3px solid var(--sf-accent);
+}
+
+.sf-highlights__icon.case {
+  background: var(--sf-accent);
+  border-radius: 0.35rem;
 }
 
 /* ===== Softphone ===== */

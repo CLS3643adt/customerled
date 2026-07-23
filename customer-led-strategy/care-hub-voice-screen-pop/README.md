@@ -30,10 +30,11 @@ Visit `http://localhost:8765`.
 2. Click the phone icon in the softphone toolbar to simulate an inbound call.
 3. Review the OOTB-style call pop, then click **Accept**.
 4. Console opens:
-   - **Left:** Health Hub client card (key info, risks, care partner, household contacts)
-   - **Centre:** Voice Call / Contact workspace tabs
-   - **Right:** Next client visits with worker assigned + preferred workers
-   - Softphone switches to Connected (notes + End)
+   - **Left:** Health Hub client card
+   - **Centre:** Agentforce for Voice live transcription + guided Visit Change questions, with auto-created Case 00015821 filling as answers are captured
+   - **Right:** Next visits / workers
+   - Softphone Connected panel
+5. Use **Replay demo** on the Voice Call tab to re-run the Agentforce transcript simulation.
 
 ## Docs
 

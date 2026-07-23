@@ -42,6 +42,11 @@
           Voice Call
           <span class="sf-nav__close" data-close-tab="voice" title="Close">×</span>
         </button>
+        <button type="button" class="sf-nav__item" data-tab="case" hidden>
+          <span class="sf-nav__icon case" aria-hidden="true"></span>
+          Case 00015821
+          <span class="sf-nav__close" data-close-tab="case" title="Close">×</span>
+        </button>
         <button type="button" class="sf-nav__item" data-tab="contact" hidden>
           <span class="sf-nav__icon contact" aria-hidden="true"></span>
           Margaret Chen
@@ -167,7 +172,7 @@
               <ol class="sf-steps">
                 <li>Open the <strong>Phone</strong> utility in the footer (already open).</li>
                 <li>Click the phone icon to simulate an inbound call.</li>
-                <li>Click <strong>Accept</strong> to screen-pop Voice Call, client card, and visit schedule.</li>
+                <li>Click <strong>Accept</strong> to screen-pop Voice Call, auto-create the Visit Change case, and start Agentforce transcription.</li>
               </ol>
             </div>
           </section>
@@ -193,24 +198,204 @@
                       <strong id="voice-status">in-progress</strong>
                     </div>
                     <div>
-                      <span>Queue</span>
-                      <strong>Home Care</strong>
+                      <span>IVR Intent</span>
+                      <strong>Visit change</strong>
                     </div>
                   </div>
                 </div>
+                <div class="sf-highlights__actions">
+                  <span class="pill pill--accent" id="case-created-pill" hidden>Case 00015821 created</span>
+                </div>
               </div>
-              <div class="sf-record__grid sf-record__grid--single">
-                <article class="sf-card">
-                  <header class="sf-card__header">Call Details</header>
-                  <dl class="sf-dl">
-                    <div><dt>Caller</dt><dd>Margaret Chen</dd></div>
-                    <div><dt>ANI</dt><dd>+61 412 883 204</dd></div>
-                    <div><dt>IVR Intent</dt><dd>Visit change</dd></div>
-                    <div><dt>Auth Level</dt><dd>Verified · DOB</dd></div>
-                    <div><dt>Related Contact</dt><dd>ECH-10482</dd></div>
-                    <div><dt>Owner</dt><dd>Sam Nguyen</dd></div>
-                    <div><dt>Suggested action</dt><dd>Offer Fri 09:30 or 11:00 with Amira · SMS Maggie &amp; David</dd></div>
+
+              <div class="sf-record__grid sf-record__grid--agentforce">
+                <article class="sf-card agentforce-card">
+                  <header class="sf-card__header agentforce-header">
+                    <div>
+                      <span class="agentforce-badge">Agentforce for Voice</span>
+                      <span class="live-dot" aria-hidden="true"></span>
+                      <span class="live-label">Live transcription</span>
+                    </div>
+                    <button type="button" class="slds-button slds-button_neutral" id="replay-transcript">
+                      Replay demo
+                    </button>
+                  </header>
+
+                  <div class="agentforce-layout">
+                    <div class="transcript-panel" aria-live="polite">
+                      <h3>Call transcript</h3>
+                      <ol class="transcript" id="transcript-list"></ol>
+                      <p class="transcript-empty" id="transcript-empty">
+                        Waiting for speech… Agentforce will transcribe the call and map answers into the case.
+                      </p>
+                    </div>
+
+                    <div class="guide-panel">
+                      <h3>Ask these questions</h3>
+                      <p class="guide-intro">
+                        Visit Change IVR flow — capture these fields so Case <strong>00015821</strong> is complete.
+                      </p>
+                      <ol class="question-list" id="question-list">
+                        <li data-question="visit" class="is-current">
+                          <span class="q-status" aria-hidden="true"></span>
+                          <div>
+                            <strong>Which visit needs to change?</strong>
+                            <p>Confirm service, date, and assigned worker</p>
+                          </div>
+                        </li>
+                        <li data-question="reason">
+                          <span class="q-status" aria-hidden="true"></span>
+                          <div>
+                            <strong>What is the reason for the change?</strong>
+                            <p>Client / family / clinical / worker unavailable</p>
+                          </div>
+                        </li>
+                        <li data-question="preference">
+                          <span class="q-status" aria-hidden="true"></span>
+                          <div>
+                            <strong>Preferred new day and time?</strong>
+                            <p>Offer options that keep preferred carer where possible</p>
+                          </div>
+                        </li>
+                        <li data-question="worker">
+                          <span class="q-status" aria-hidden="true"></span>
+                          <div>
+                            <strong>Same worker required?</strong>
+                            <p>Amira Khan preferred for physio</p>
+                          </div>
+                        </li>
+                        <li data-question="notify">
+                          <span class="q-status" aria-hidden="true"></span>
+                          <div>
+                            <strong>Who should be notified?</strong>
+                            <p>Client SMS / household contact / care partner</p>
+                          </div>
+                        </li>
+                        <li data-question="risk">
+                          <span class="q-status" aria-hidden="true"></span>
+                          <div>
+                            <strong>Any risk or access notes for the new visit?</strong>
+                            <p>Falls, medication timing, key safe, etc.</p>
+                          </div>
+                        </li>
+                      </ol>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="sf-card case-card" id="case-card">
+                  <header class="sf-card__header">
+                    <div>
+                      Auto-created Case
+                      <span class="pill pill--ok" id="case-status-pill">New</span>
+                    </div>
+                    <button type="button" class="slds-button slds-button_brand" data-tab-jump="case">
+                      Open case
+                    </button>
+                  </header>
+                  <p class="case-banner" id="case-banner">
+                    IVR intent <strong>Visit change</strong> created Case <strong>00015821</strong> and linked it to
+                    Voice Call VC-000482 and Contact Margaret Chen.
+                  </p>
+                  <dl class="sf-dl case-fields" id="case-fields">
+                    <div><dt>Case Number</dt><dd>00015821</dd></div>
+                    <div><dt>Type</dt><dd>Visit Change</dd></div>
+                    <div><dt>Priority</dt><dd>Medium</dd></div>
+                    <div><dt>Origin</dt><dd>Phone · IVR</dd></div>
+                    <div>
+                      <dt>Subject</dt>
+                      <dd data-field="subject">Visit change — pending details</dd>
+                    </div>
+                    <div>
+                      <dt>Visit</dt>
+                      <dd data-field="visit" class="is-pending">Awaiting answer…</dd>
+                    </div>
+                    <div>
+                      <dt>Reason</dt>
+                      <dd data-field="reason" class="is-pending">Awaiting answer…</dd>
+                    </div>
+                    <div>
+                      <dt>Preferred slot</dt>
+                      <dd data-field="preference" class="is-pending">Awaiting answer…</dd>
+                    </div>
+                    <div>
+                      <dt>Worker</dt>
+                      <dd data-field="worker" class="is-pending">Awaiting answer…</dd>
+                    </div>
+                    <div>
+                      <dt>Notify</dt>
+                      <dd data-field="notify" class="is-pending">Awaiting answer…</dd>
+                    </div>
+                    <div>
+                      <dt>Risk / access</dt>
+                      <dd data-field="risk" class="is-pending">Awaiting answer…</dd>
+                    </div>
+                    <div>
+                      <dt>Description</dt>
+                      <dd data-field="description" class="is-pending">Built from transcript…</dd>
+                    </div>
                   </dl>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section class="sf-page" data-page="case" hidden>
+            <div class="sf-record">
+              <div class="sf-highlights sf-highlights--case">
+                <div class="sf-highlights__icon case" aria-hidden="true"></div>
+                <div class="sf-highlights__body">
+                  <p class="sf-highlights__type">Case</p>
+                  <h2>00015821 · Visit change for Margaret Chen</h2>
+                  <div class="sf-highlights__fields">
+                    <div>
+                      <span>Status</span>
+                      <strong id="case-page-status">New</strong>
+                    </div>
+                    <div>
+                      <span>Type</span>
+                      <strong>Visit Change</strong>
+                    </div>
+                    <div>
+                      <span>Contact</span>
+                      <strong>Margaret Chen</strong>
+                    </div>
+                    <div>
+                      <span>Voice Call</span>
+                      <strong>VC-000482</strong>
+                    </div>
+                  </div>
+                </div>
+                <div class="sf-highlights__actions">
+                  <button type="button" class="slds-button slds-button_neutral">Edit</button>
+                  <button type="button" class="slds-button slds-button_brand" id="mark-case-working">
+                    Start working
+                  </button>
+                </div>
+              </div>
+              <div class="sf-record__grid">
+                <article class="sf-card">
+                  <header class="sf-card__header">Case Details</header>
+                  <dl class="sf-dl" id="case-page-fields">
+                    <div><dt>Subject</dt><dd data-field="subject">Visit change — pending details</dd></div>
+                    <div><dt>Visit</dt><dd data-field="visit" class="is-pending">Awaiting answer…</dd></div>
+                    <div><dt>Reason</dt><dd data-field="reason" class="is-pending">Awaiting answer…</dd></div>
+                    <div><dt>Preferred slot</dt><dd data-field="preference" class="is-pending">Awaiting answer…</dd></div>
+                    <div><dt>Worker</dt><dd data-field="worker" class="is-pending">Awaiting answer…</dd></div>
+                    <div><dt>Notify</dt><dd data-field="notify" class="is-pending">Awaiting answer…</dd></div>
+                    <div><dt>Risk / access</dt><dd data-field="risk" class="is-pending">Awaiting answer…</dd></div>
+                  </dl>
+                </article>
+                <article class="sf-card">
+                  <header class="sf-card__header">Agentforce summary</header>
+                  <p id="case-summary" class="case-summary is-pending">
+                    Summary will appear as transcript answers are captured.
+                  </p>
+                  <ul class="sf-list" id="case-next-steps">
+                    <li>Confirm Fri slot with Amira in scheduling</li>
+                    <li>Send SMS to Maggie and David</li>
+                    <li>Update care partner Jordan Lee</li>
+                  </ul>
                 </article>
               </div>
             </div>
