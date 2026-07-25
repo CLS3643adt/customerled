@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Care Hub · New enquiry to Lead</title>
+    <meta
+      name="description"
+      content="Interactive Salesforce Voice prototype: new service enquiry creates a Lead and guides intake capture."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="sf-app" data-state="available">
+      <!-- Lightning global header -->
+      <header class="sf-header">
+        <div class="sf-header__brand">
+          <span class="sf-header__cloud" aria-hidden="true">☁</span>
+          <span class="sf-header__app">Service Console</span>
+          <span class="sf-header__divider" aria-hidden="true"></span>
+          <span class="sf-header__org">Care Hub</span>
+        </div>
+        <div class="sf-header__search">
+          <input type="search" placeholder="Search Salesforce" aria-label="Search Salesforce" />
+        </div>
+        <div class="sf-header__actions">
+          <button type="button" class="sf-icon-btn" title="Favorites" aria-label="Favorites">☆</button>
+          <button type="button" class="sf-icon-btn" title="Global Actions" aria-label="Global Actions">＋</button>
+          <button type="button" class="sf-icon-btn" title="Guidance Center" aria-label="Guidance Center">?</button>
+          <div class="sf-avatar sf-avatar--sm" title="Sam Nguyen">SN</div>
+        </div>
+      </header>
+
+      <!-- Console navigation / workspace tabs -->
+      <nav class="sf-nav" aria-label="Console navigation">
+        <button type="button" class="sf-nav__item" data-tab="home" aria-pressed="true">
+          <span class="sf-nav__icon home" aria-hidden="true"></span>
+          Home
+        </button>
+        <button type="button" class="sf-nav__item" data-tab="voice" hidden>
+          <span class="sf-nav__icon phone" aria-hidden="true"></span>
+          Voice Call
+          <span class="sf-nav__close" data-close-tab="voice" title="Close">×</span>
+        </button>
+        <button type="button" class="sf-nav__item" data-tab="case" hidden>
+          <span class="sf-nav__icon case" aria-hidden="true"></span>
+          <span id="record-tab-label">Lead</span>
+          <span class="sf-nav__close" data-close-tab="case" title="Close">×</span>
+        </button>
+      </nav>
+
+      <div class="sf-body">
+        <!-- Main workspace -->
+        <main class="sf-workspace">
+          <section class="sf-page" data-page="home">
+            <div class="demo-hub">
+              <div class="sf-card demo-hero">
+                <p class="demo-kicker">Interactive prototype</p>
+                <h1>New enquiry → Lead</h1>
+                <p>
+                  Demonstrate Salesforce Voice screen-pop and Agentforce guided capture for a new
+                  service enquiry that auto-creates a Lead. Run it interactively, then adapt the
+                  same intake pattern for your organisation.
+                </p>
+                <div class="demo-modes">
+                  <button type="button" class="mode-chip is-active" data-demo-mode="interactive">
+                    Interactive capture
+                  </button>
+                  <button type="button" class="mode-chip" data-demo-mode="guided">
+                    Guided auto-play
+                  </button>
+                </div>
+                <p class="demo-mode-help" id="demo-mode-help">
+                  Interactive: you step through each question and select answers. Guided: Agentforce
+                  auto-plays the transcript.
+                </p>
+              </div>
+
+              <div class="process-map sf-card" aria-label="Target process flow">
+                <h2>Target process flow</h2>
+                <ol class="process-steps" id="home-process-steps">
+                  <li data-step="select"><span>1</span><strong>Select intent</strong><em>General lead enquiry</em></li>
+                  <li data-step="pop"><span>2</span><strong>Screen pop</strong><em>Softphone + Voice Call</em></li>
+                  <li data-step="capture"><span>3</span><strong>Capture</strong><em>Enquirer &amp; client</em></li>
+                  <li data-step="record"><span>4</span><strong>Create Lead</strong><em>L-000492</em></li>
+                  <li data-step="next"><span>5</span><strong>Next actions</strong><em>Qualify &amp; follow up</em></li>
+                </ol>
+              </div>
+
+              <div class="scenario-grid" id="scenario-grid"></div>
+            </div>
+          </section>
+
+          <section class="sf-page" data-page="voice" hidden>
+            <div class="sf-record">
+              <div class="sf-highlights sf-highlights--voice">
+                <div class="sf-highlights__icon phone" aria-hidden="true"></div>
+                <div class="sf-highlights__body">
+                  <p class="sf-highlights__type">Voice Call</p>
+                  <h2>VC-000482 · Priya Sharma</h2>
+                  <div class="sf-highlights__fields">
+                    <div>
+                      <span>Call Type</span>
+                      <strong>Inbound</strong>
+                    </div>
+                    <div>
+                      <span>From</span>
+                      <strong id="voice-from-phone">+61 400 778 219</strong>
+                    </div>
+                    <div>
+                      <span>Call Status</span>
+                      <strong id="voice-status">in-progress</strong>
+                    </div>
+                    <div>
+                      <span>IVR Intent</span>
+                      <strong id="voice-intent-label">General lead enquiry</strong>
+                    </div>
+                  </div>
+                </div>
+                <div class="sf-highlights__actions">
+                  <span class="pill pill--accent" id="case-created-pill" hidden>Case created</span>
+                </div>
+              </div>
+
+              <div class="process-strip" id="process-strip" aria-label="Live process steps">
+                <div class="process-strip__item is-done" data-live-step="select"><span>1</span> Intent</div>
+                <div class="process-strip__item is-active" data-live-step="pop"><span>2</span> Screen pop</div>
+                <div class="process-strip__item" data-live-step="capture"><span>3</span> Capture</div>
+                <div class="process-strip__item" data-live-step="record"><span>4</span> Record</div>
+                <div class="process-strip__item" data-live-step="next"><span>5</span> Next actions</div>
+              </div>
+
+              <div class="intent-switcher" id="intent-switcher" aria-label="Question flow" hidden>
+                <span class="intent-switcher__label">Question flow</span>
+                <div class="intent-switcher__options" id="intent-options"></div>
+              </div>
+
+              <div class="sf-record__grid sf-record__grid--agentforce">
+                <article class="sf-card agentforce-card">
+                  <header class="sf-card__header agentforce-header">
+                    <div>
+                      <span class="agentforce-badge">Agentforce for Voice</span>
+                      <span class="live-dot" aria-hidden="true"></span>
+                      <span class="live-label">Live transcription</span>
+                    </div>
+                    <button type="button" class="slds-button slds-button_neutral" id="replay-transcript">
+                      Replay guided
+                    </button>
+                    <button type="button" class="slds-button slds-button_brand" id="capture-next">
+                      Capture next answer
+                    </button>
+                  </header>
+
+                  <div class="agentforce-layout">
+                    <div class="transcript-panel" aria-live="polite">
+                      <h3>Call transcript</h3>
+                      <ol class="transcript" id="transcript-list"></ol>
+                      <p class="transcript-empty" id="transcript-empty">
+                        Waiting for speech… Agentforce will transcribe the call and map answers into the
+                        record.
+                      </p>
+                    </div>
+
+                    <div class="guide-panel">
+                      <h3>Ask these questions</h3>
+                      <p class="guide-intro" id="guide-intro">Select an intent flow to load questions.</p>
+                      <ol class="question-list" id="question-list"></ol>
+                      <div class="answer-panel" id="answer-panel" hidden>
+                        <h4 id="answer-panel-title">Select an answer to capture</h4>
+                        <div class="answer-choices" id="answer-choices"></div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="sf-card case-card" id="case-card">
+                  <header class="sf-card__header">
+                    <div>
+                      <span id="record-card-title">Auto-created Case</span>
+                      <span class="pill pill--ok" id="case-status-pill">New</span>
+                    </div>
+                    <button type="button" class="slds-button slds-button_brand" data-tab-jump="case">
+                      Open record
+                    </button>
+                  </header>
+                  <p class="case-banner" id="case-banner">Choose an IVR intent to create the related record.</p>
+                  <dl class="sf-dl case-fields" id="case-fields"></dl>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section class="sf-page" data-page="case" hidden>
+            <div class="sf-record">
+              <div class="sf-highlights sf-highlights--case">
+                <div class="sf-highlights__icon case" aria-hidden="true"></div>
+                <div class="sf-highlights__body">
+                  <p class="sf-highlights__type" id="case-page-type-label">Case</p>
+                  <h2 id="case-page-title">Record</h2>
+                  <div class="sf-highlights__fields">
+                    <div>
+                      <span>Status</span>
+                      <strong id="case-page-status">New</strong>
+                    </div>
+                    <div>
+                      <span>Type</span>
+                      <strong id="case-page-record-label">—</strong>
+                    </div>
+                    <div>
+                      <span>Owner</span>
+                      <strong id="case-page-owner">—</strong>
+                    </div>
+                    <div>
+                      <span>Voice Call</span>
+                      <strong>VC-000482</strong>
+                    </div>
+                  </div>
+                </div>
+                <div class="sf-highlights__actions">
+                  <button type="button" class="slds-button slds-button_neutral">Edit</button>
+                  <button type="button" class="slds-button slds-button_brand" id="mark-case-working">
+                    Start working
+                  </button>
+                </div>
+              </div>
+              <div class="sf-record__grid">
+                <article class="sf-card">
+                  <header class="sf-card__header">Captured details</header>
+                  <dl class="sf-dl" id="case-page-fields"></dl>
+                </article>
+                <article class="sf-card">
+                  <header class="sf-card__header">Agentforce summary</header>
+                  <p id="case-summary" class="case-summary is-pending">
+                    Summary will appear as transcript answers are captured.
+                  </p>
+                  <ul class="sf-list" id="case-next-steps"></ul>
+                </article>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <!-- Facilitator control bar -->
+      <div class="facilitator-bar" id="facilitator-bar" role="region" aria-label="Prototype facilitator controls">
+        <div class="facilitator-bar__status">
+          <strong id="facilitator-mode-label">Mode · Interactive</strong>
+          <span id="facilitator-step-label">Ready to start New enquiry → Lead</span>
+        </div>
+        <div class="facilitator-bar__actions">
+          <button type="button" class="slds-button slds-button_neutral" id="fac-home">Demo hub</button>
+          <button type="button" class="slds-button slds-button_neutral" id="fac-reset">Reset</button>
+          <button type="button" class="slds-button slds-button_neutral" id="fac-toggle-mode">Switch to guided</button>
+          <button type="button" class="slds-button slds-button_brand" id="fac-next">Start / next step</button>
+        </div>
+      </div>
+
+      <!-- Open CTI softphone — utility bar popup from bottom -->
+      <aside class="sf-softphone" aria-label="Phone softphone" data-panel="available">
+          <header class="sf-softphone__header">
+            <span class="sf-softphone__title">
+              <span class="sf-softphone__phone-icon" aria-hidden="true"></span>
+              Phone
+            </span>
+            <button type="button" class="sf-icon-btn sf-icon-btn--dark" id="softphone-minimize" title="Minimize">
+              ▬
+            </button>
+          </header>
+
+          <!-- Available / idle toolbar (phonePanel) -->
+          <div class="softphone-panel" data-view="available">
+            <div class="phone-toolbar">
+              <label class="presence">
+                <span class="presence-dot available" aria-hidden="true"></span>
+                <select id="presence-select" aria-label="Presence">
+                  <option>Available</option>
+                  <option>Busy</option>
+                  <option>Unavailable</option>
+                </select>
+              </label>
+              <div class="toolbar-actions">
+                <button
+                  type="button"
+                  class="slds-button slds-button_icon"
+                  id="simulate-call"
+                  title="Simulate an incoming call"
+                  aria-label="Simulate an incoming call"
+                >
+                  <span class="icon-call" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="slds-button slds-button_icon" title="Help" aria-label="Help">
+                  <span class="icon-help" aria-hidden="true">?</span>
+                </button>
+              </div>
+            </div>
+            <div class="ivr-picker">
+              <p class="ivr-picker__label">IVR intent for next call</p>
+              <div class="ivr-picker__options" id="softphone-intent-options"></div>
+            </div>
+            <div class="search-bar">
+              <input type="text" class="slds-input" placeholder="Enter a name or number..." />
+              <button type="button" class="slds-button slds-button_icon slds-button_icon-border" title="Dial pad">
+                <span class="icon-dialpad" aria-hidden="true"></span>
+              </button>
+            </div>
+            <div class="message-body">Ready — simulate an incoming General lead enquiry call</div>
+          </div>
+
+          <!-- Incoming call pop (callInitiatedPanel) -->
+          <div class="softphone-panel call-initiated" data-view="incoming" hidden>
+            <div class="slds-panel__section call-initiated__top">
+              <div class="avatar-wrap">
+                <div class="slds-avatar slds-avatar_circle slds-avatar_large" id="incoming-avatar" aria-hidden="true">
+                  PS
+                </div>
+              </div>
+              <div class="record-name" id="incoming-name">Priya Sharma</div>
+              <div class="company-details" id="incoming-role">Enquirer · Daughter</div>
+              <div class="company-details" id="incoming-intent">General lead enquiry</div>
+              <div class="incoming-line">
+                Incoming&nbsp;<span class="phone-number" id="incoming-phone">+61 400 778 219</span>...
+              </div>
+              <div class="ticker" id="incoming-ticker">00:00</div>
+            </div>
+            <div class="bottom-panel">
+              <button type="button" class="slds-button slds-button_destructive" id="decline-call">
+                Decline
+              </button>
+              <button type="button" class="slds-button slds-button_brand" id="accept-call">Accept</button>
+            </div>
+          </div>
+
+          <!-- Connected call (connectedPanel) -->
+          <div class="softphone-panel connected" data-view="connected" hidden>
+            <div class="connected-top">
+              <div class="mini-record">
+                <div class="slds-avatar slds-avatar_circle" id="connected-avatar" aria-hidden="true">PS</div>
+                <div>
+                  <div class="mini-record__name" id="connected-name">Priya Sharma</div>
+                  <div class="mini-record__meta" id="connected-role">Enquirer · Daughter</div>
+                  <div class="mini-record__meta" id="connected-intent">Inbound · General lead enquiry</div>
+                </div>
+              </div>
+            </div>
+            <div class="connected-mid">
+              <div class="connected-status">
+                <span>Connected: <span id="connected-ticker">00:00</span></span>
+                <button
+                  type="button"
+                  class="slds-button slds-button_icon slds-button_icon-border"
+                  id="toggle-notes"
+                  title="Notes"
+                >
+                  <span class="icon-note" aria-hidden="true"></span>
+                </button>
+              </div>
+              <textarea
+                class="call-note"
+                id="call-note"
+                rows="6"
+                maxlength="32000"
+                placeholder="Enter notes..."
+              ></textarea>
+            </div>
+            <div class="bottom-panel bottom-panel--single">
+              <button type="button" class="slds-button slds-button_destructive" id="end-call">End</button>
+            </div>
+          </div>
+      </aside>
+
+      <!-- Utility bar -->
+      <footer class="sf-utility">
+        <button type="button" class="sf-utility__item is-active" id="utility-phone" aria-pressed="true">
+          <span class="sf-softphone__phone-icon" aria-hidden="true"></span>
+          Phone
+          <span class="utility-badge" id="utility-badge" hidden>1</span>
+        </button>
+        <button type="button" class="sf-utility__item">Omni-Channel</button>
+        <button type="button" class="sf-utility__item">Notes</button>
+        <div class="sf-utility__spacer"></div>
+        <span class="sf-utility__meta">Sam Nguyen · Available</span>
+      </footer>
+    </div>
+
+    <script src="./flows.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
