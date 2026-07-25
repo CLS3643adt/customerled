@@ -30,7 +30,7 @@ If GitHub adds **Deploy Jekyll with GitHub Pages…**, delete that workflow file
 
 ## Alternative — Netlify Drop
 
-1. Use folder: `customer-led-strategy/care-hub-voice-screen-pop`
+1. Use folder: `customer-led-strategy/care-hub-voice-screen-pop` (multi-scenario) or `customer-led-strategy/new-enquiry-to-lead` (Lead-only)
 2. Visit https://app.netlify.com/drop
 3. Drop the folder and share the `*.netlify.app` link
 
