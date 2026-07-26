@@ -45,6 +45,7 @@ Open `http://localhost:8766`.
 - `styles.css` — Salesforce-inspired Care Hub theme
 - `docs/brief.md` — problem / outcome brief
 - `docs/call-journey.md` — call journey notes
+- `docs/agentforce-flow-requirements.md` — Agentforce requirements, draft questions, topic instructions, and build process
 
 ## Share online
 
