@@ -1,0 +1,37 @@
+Care Hub Salesforce Voice Agent Flow Pack
+========================================
+
+Contents
+--------
+START-HERE.md          How to open and present the pack
+README.md              Short pack summary
+COVER-NOTE.md          Email / Teams cover note for recipients
+MANIFEST.txt           This file
+prototype/             Interactive HTML prototype (index.html, app.js, flows.js, styles.css)
+documentation/         Brief, journey, flow specs, checklist, facilitator guide, sharing
+assets/                Optional screenshots / logos
+
+Prototype entry point
+---------------------
+prototype/index.html
+
+Documentation entry point
+-------------------------
+documentation/README.md
+
+Live demo
+---------
+https://cls3643adt.github.io/customerled/
+
+Flows included
+--------------
+1. visit-change          Case — Scheduling
+2. worker-sick           Case — SC Manager leave approval
+3. lead-enquiry          Lead — Intake
+4. finance-billing       Case — Finance
+5. complaint-feedback    Case — Quality & Experience
+
+Source
+------
+customer-led-strategy/care-hub-voice-screen-pop (interactive)
+customer-led-strategy/care-hub-voice-agent-flow-pack (this pack)
