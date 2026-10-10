@@ -2,7 +2,6 @@
 
 Customer Led Strategy agent for consultancy briefs, work-stream estimates, and branded PowerPoint / Word deliverables.
 
-<<<<<<< HEAD
 ## Quick start (local standalone — no Cursor team required)
 
 ```bash
@@ -15,19 +14,6 @@ npx bdk serve --dir . --mode single --dev --host 0.0.0.0 --port 3000
 ```
 
 Hosted `bdk deploy` needs a Cursor **team**. Individual accounts should use this local playground path.
-=======
-## Quick start
-
-```bash
-cd cls-brief-studio
-npm install
-npx bdk validate --dir .
-npx bdk serve --dir . --mode single --dev
-# http://127.0.0.1:3000/playground
-```
-
-Model turns need a Cursor credential (`CURSOR_API_KEY` or `bdk login`).
->>>>>>> origin/main
 
 ## What it does
 
