@@ -1,0 +1,22 @@
+{
+  "name": "cls-brief-studio",
+  "private": true,
+  "type": "module",
+  "description": "Customer Led Strategy agent for consultancy briefs, estimates, and branded PPTX/DOCX",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "dev": "npx bdk dev",
+    "validate": "npx bdk validate --dir .",
+    "eval": "npx bdk eval --dir ."
+  },
+  "dependencies": {
+    "@cursor/bdk": "^0.2.23",
+    "docx": "^9.9.0",
+    "pptxgenjs": "^4.0.1",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "typescript": "6.0.3"
+  }
+}
