@@ -1,253 +1,412 @@
-import {
-  AlignmentType,
-  BorderStyle,
-  Document,
-  HeadingLevel,
-  Packer,
-  Paragraph,
-  Table,
-  TableCell,
-  TableRow,
-  TextRun,
-  WidthType,
-} from "docx";
+import PptxGenJS from "pptxgenjs";
 import { CLS_BRAND } from "./brand.js";
-import type { DocumentSection } from "./types.js";
+import type { PresentationSlide } from "./types.js";
 
 const C = CLS_BRAND.colors;
 
-function brandHeader(title: string, client?: string): Paragraph[] {
-  return [
-    new Paragraph({
-      spacing: { after: 80 },
-      children: [
-        new TextRun({
-          text: CLS_BRAND.name.toUpperCase(),
-          bold: true,
-          color: C.purple,
-          size: 20,
-          font: CLS_BRAND.fonts.heading,
-        }),
-      ],
-    }),
-    new Paragraph({
-      spacing: { after: 120 },
-      border: {
-        bottom: { style: BorderStyle.SINGLE, size: 18, color: C.orange },
-      },
-      children: [
-        new TextRun({
-          text: title,
-          bold: true,
-          color: C.purpleDark,
-          size: 36,
-          font: CLS_BRAND.fonts.heading,
-        }),
-      ],
-    }),
-    ...(client
-      ? [
-          new Paragraph({
-            spacing: { after: 240 },
-            children: [
-              new TextRun({
-                text: `Client: ${client}`,
-                color: C.textWeak,
-                size: 22,
-                font: CLS_BRAND.fonts.body,
-              }),
-            ],
-          }),
-        ]
-      : [new Paragraph({ spacing: { after: 240 }, children: [] })]),
-  ];
+function addChrome(slide: PptxGenJS.Slide, footer?: string): void {
+  slide.addShape("rect", {
+    x: 0,
+    y: 0,
+    w: 10,
+    h: 0.12,
+    fill: { color: C.primary },
+    line: { color: C.primary },
+  });
+  slide.addShape("rect", {
+    x: 0,
+    y: 5.4,
+    w: 10,
+    h: 0.22,
+    fill: { color: C.primaryDark },
+    line: { color: C.primaryDark },
+  });
+  slide.addText(CLS_BRAND.name, {
+    x: 0.35,
+    y: 5.42,
+    w: 5,
+    h: 0.18,
+    fontSize: 9,
+    fontFace: CLS_BRAND.fonts.body,
+    color: C.white,
+    margin: 0,
+  });
+  if (footer) {
+    slide.addText(footer, {
+      x: 5.2,
+      y: 5.42,
+      w: 4.45,
+      h: 0.18,
+      fontSize: 9,
+      fontFace: CLS_BRAND.fonts.body,
+      color: C.accent,
+      align: "right",
+      margin: 0,
+    });
+  }
 }
 
-function sectionBlocks(section: DocumentSection): Paragraph[] {
-  const out: Paragraph[] = [
-    new Paragraph({
-      heading: HeadingLevel.HEADING_1,
-      spacing: { before: 280, after: 120 },
-      children: [
-        new TextRun({
-          text: section.heading,
-          bold: true,
-          color: C.purpleDark,
-          size: 26,
-          font: CLS_BRAND.fonts.heading,
-        }),
-      ],
-    }),
-  ];
-
-  for (const p of section.paragraphs ?? []) {
-    out.push(
-      new Paragraph({
-        spacing: { after: 120 },
-        children: [
-          new TextRun({
-            text: p,
-            color: C.text,
-            size: 22,
-            font: CLS_BRAND.fonts.body,
-          }),
-        ],
-      }),
-    );
+function renderTitle(pres: PptxGenJS, slide: PresentationSlide): void {
+  const s = pres.addSlide();
+  s.addShape("rect", {
+    x: 0,
+    y: 0,
+    w: 10,
+    h: 5.625,
+    fill: { color: C.primaryDark },
+    line: { color: C.primaryDark },
+  });
+  s.addShape("rect", {
+    x: 0,
+    y: 4.9,
+    w: 10,
+    h: 0.725,
+    fill: { color: C.accent },
+    line: { color: C.accent },
+  });
+  s.addText(CLS_BRAND.name, {
+    x: 0.6,
+    y: 1.2,
+    w: 8.8,
+    h: 0.4,
+    fontSize: 16,
+    fontFace: CLS_BRAND.fonts.heading,
+    color: C.accent,
+    bold: true,
+    margin: 0,
+  });
+  s.addText(slide.title, {
+    x: 0.6,
+    y: 1.8,
+    w: 8.8,
+    h: 1.4,
+    fontSize: 36,
+    fontFace: CLS_BRAND.fonts.heading,
+    color: C.white,
+    bold: true,
+    margin: 0,
+  });
+  if (slide.subtitle) {
+    s.addText(slide.subtitle, {
+      x: 0.6,
+      y: 3.4,
+      w: 8.8,
+      h: 0.7,
+      fontSize: 16,
+      fontFace: CLS_BRAND.fonts.body,
+      color: C.primaryLight,
+      margin: 0,
+    });
   }
-
-  for (const bullet of section.bullets ?? []) {
-    out.push(
-      new Paragraph({
-        spacing: { after: 80 },
-        indent: { left: 360 },
-        children: [
-          new TextRun({
-            text: `• ${bullet}`,
-            color: C.text,
-            size: 22,
-            font: CLS_BRAND.fonts.body,
-          }),
-        ],
-      }),
-    );
-  }
-
-  return out;
-}
-
-function metaTable(rows: { label: string; value: string }[]): Table {
-  const border = {
-    style: BorderStyle.SINGLE,
-    size: 4,
-    color: C.border,
-  };
-  return new Table({
-    width: { size: 100, type: WidthType.PERCENTAGE },
-    rows: rows.map(
-      (row) =>
-        new TableRow({
-          children: [
-            new TableCell({
-              width: { size: 28, type: WidthType.PERCENTAGE },
-              borders: {
-                top: border,
-                bottom: border,
-                left: border,
-                right: border,
-              },
-              children: [
-                new Paragraph({
-                  children: [
-                    new TextRun({
-                      text: row.label,
-                      bold: true,
-                      color: C.purple,
-                      size: 20,
-                      font: CLS_BRAND.fonts.body,
-                    }),
-                  ],
-                }),
-              ],
-            }),
-            new TableCell({
-              width: { size: 72, type: WidthType.PERCENTAGE },
-              borders: {
-                top: border,
-                bottom: border,
-                left: border,
-                right: border,
-              },
-              children: [
-                new Paragraph({
-                  children: [
-                    new TextRun({
-                      text: row.value,
-                      color: C.text,
-                      size: 20,
-                      font: CLS_BRAND.fonts.body,
-                    }),
-                  ],
-                }),
-              ],
-            }),
-          ],
-        }),
-    ),
+  s.addText(CLS_BRAND.tagline, {
+    x: 0.6,
+    y: 5.1,
+    w: 8.8,
+    h: 0.35,
+    fontSize: 12,
+    fontFace: CLS_BRAND.fonts.body,
+    color: C.white,
+    margin: 0,
   });
 }
 
-export async function buildWordDocument(input: {
-  title: string;
-  client?: string;
-  subtitle?: string;
-  sections: DocumentSection[];
-  metaRows?: { label: string; value: string }[];
-}): Promise<Uint8Array> {
-  const children: (Paragraph | Table)[] = [
-    ...brandHeader(input.title, input.client),
-  ];
-
-  if (input.subtitle) {
-    children.push(
-      new Paragraph({
-        spacing: { after: 200 },
-        children: [
-          new TextRun({
-            text: input.subtitle,
-            italics: true,
-            color: C.textWeak,
-            size: 22,
-            font: CLS_BRAND.fonts.body,
-          }),
-        ],
-      }),
-    );
+function renderBullets(pres: PptxGenJS, slide: PresentationSlide): void {
+  const s = pres.addSlide();
+  s.addShape("rect", {
+    x: 0,
+    y: 0,
+    w: 10,
+    h: 5.625,
+    fill: { color: C.white },
+    line: { color: C.white },
+  });
+  addChrome(s, slide.footer);
+  s.addText(slide.title, {
+    x: 0.5,
+    y: 0.4,
+    w: 9,
+    h: 0.55,
+    fontSize: 26,
+    fontFace: CLS_BRAND.fonts.heading,
+    color: C.primaryDark,
+    bold: true,
+    margin: 0,
+  });
+  if (slide.subtitle) {
+    s.addText(slide.subtitle, {
+      x: 0.5,
+      y: 0.95,
+      w: 9,
+      h: 0.35,
+      fontSize: 13,
+      fontFace: CLS_BRAND.fonts.body,
+      color: C.textWeak,
+      margin: 0,
+    });
   }
+  const bullets = slide.bullets ?? [];
+  s.addText(
+    bullets.map((b) => ({
+      text: b,
+      options: { bullet: true, breakLine: true },
+    })),
+    {
+      x: 0.55,
+      y: slide.subtitle ? 1.45 : 1.15,
+      w: 8.9,
+      h: 3.7,
+      fontSize: 16,
+      fontFace: CLS_BRAND.fonts.body,
+      color: C.text,
+      paraSpaceAfter: 8,
+      valign: "top",
+    },
+  );
+}
 
-  if (input.metaRows?.length) {
-    children.push(metaTable(input.metaRows));
-    children.push(new Paragraph({ children: [] }));
-  }
+function renderTwoColumn(pres: PptxGenJS, slide: PresentationSlide): void {
+  const s = pres.addSlide();
+  s.addShape("rect", {
+    x: 0,
+    y: 0,
+    w: 10,
+    h: 5.625,
+    fill: { color: C.white },
+    line: { color: C.white },
+  });
+  addChrome(s, slide.footer);
+  s.addText(slide.title, {
+    x: 0.5,
+    y: 0.4,
+    w: 9,
+    h: 0.5,
+    fontSize: 26,
+    fontFace: CLS_BRAND.fonts.heading,
+    color: C.primaryDark,
+    bold: true,
+    margin: 0,
+  });
 
-  for (const section of input.sections) {
-    children.push(...sectionBlocks(section));
-  }
+  s.addShape("rect", {
+    x: 0.45,
+    y: 1.15,
+    w: 4.4,
+    h: 3.9,
+    fill: { color: C.primaryLight },
+    line: { color: C.primaryLight },
+  });
+  s.addShape("rect", {
+    x: 5.15,
+    y: 1.15,
+    w: 4.4,
+    h: 3.9,
+    fill: { color: C.accentLight },
+    line: { color: C.accentLight },
+  });
 
-  children.push(
-    new Paragraph({
-      spacing: { before: 400 },
-      alignment: AlignmentType.LEFT,
-      border: {
-        top: { style: BorderStyle.SINGLE, size: 12, color: C.purple },
-      },
-      children: [
-        new TextRun({
-          text: `${CLS_BRAND.name} · ${CLS_BRAND.tagline}`,
-          color: C.textWeak,
-          size: 18,
-          font: CLS_BRAND.fonts.body,
-        }),
-      ],
-    }),
+  s.addText(slide.leftTitle ?? "Left", {
+    x: 0.65,
+    y: 1.3,
+    w: 4,
+    h: 0.4,
+    fontSize: 16,
+    fontFace: CLS_BRAND.fonts.heading,
+    color: C.primaryDark,
+    bold: true,
+    margin: 0,
+  });
+  s.addText(
+    (slide.leftBullets ?? []).map((b) => ({
+      text: b,
+      options: { bullet: true, breakLine: true },
+    })),
+    {
+      x: 0.65,
+      y: 1.8,
+      w: 4,
+      h: 3,
+      fontSize: 13,
+      fontFace: CLS_BRAND.fonts.body,
+      color: C.text,
+      paraSpaceAfter: 6,
+      valign: "top",
+    },
   );
 
-  const doc = new Document({
-    creator: CLS_BRAND.name,
-    title: input.title,
-    description: CLS_BRAND.tagline,
-    sections: [
-      {
-        properties: {
-          page: {
-            margin: { top: 720, right: 720, bottom: 720, left: 720 },
-          },
-        },
-        children,
-      },
-    ],
+  s.addText(slide.rightTitle ?? "Right", {
+    x: 5.35,
+    y: 1.3,
+    w: 4,
+    h: 0.4,
+    fontSize: 16,
+    fontFace: CLS_BRAND.fonts.heading,
+    color: C.accentDark,
+    bold: true,
+    margin: 0,
+  });
+  s.addText(
+    (slide.rightBullets ?? []).map((b) => ({
+      text: b,
+      options: { bullet: true, breakLine: true },
+    })),
+    {
+      x: 5.35,
+      y: 1.8,
+      w: 4,
+      h: 3,
+      fontSize: 13,
+      fontFace: CLS_BRAND.fonts.body,
+      color: C.text,
+      paraSpaceAfter: 6,
+      valign: "top",
+    },
+  );
+}
+
+function renderTable(pres: PptxGenJS, slide: PresentationSlide): void {
+  const s = pres.addSlide();
+  s.addShape("rect", {
+    x: 0,
+    y: 0,
+    w: 10,
+    h: 5.625,
+    fill: { color: C.white },
+    line: { color: C.white },
+  });
+  addChrome(s, slide.footer);
+  s.addText(slide.title, {
+    x: 0.5,
+    y: 0.35,
+    w: 9,
+    h: 0.45,
+    fontSize: 24,
+    fontFace: CLS_BRAND.fonts.heading,
+    color: C.primaryDark,
+    bold: true,
+    margin: 0,
   });
 
-  const buffer = await Packer.toBuffer(doc);
+  const headers = slide.tableHeaders ?? [];
+  const rows = slide.tableRows ?? [];
+  const tableRows: PptxGenJS.TableRow[] = [
+    headers.map((h) => ({
+      text: h,
+      options: {
+        fill: { color: C.primary },
+        color: C.white,
+        bold: true,
+        align: "left",
+        valign: "middle",
+      },
+    })),
+    ...rows.map((row, i) =>
+      row.map((cell) => ({
+        text: cell,
+        options: {
+          fill: { color: i % 2 === 0 ? C.primaryLight : C.white },
+          color: C.text,
+          align: "left" as const,
+          valign: "middle" as const,
+        },
+      })),
+    ),
+  ];
+
+  s.addTable(tableRows, {
+    x: 0.4,
+    y: 1.0,
+    w: 9.2,
+    colW: headers.map(() => 9.2 / Math.max(headers.length, 1)),
+    border: [
+      { pt: 0.5, color: C.border },
+      { pt: 0.5, color: C.border },
+      { pt: 0.5, color: C.border },
+      { pt: 0.5, color: C.border },
+    ],
+    fontFace: CLS_BRAND.fonts.body,
+    fontSize: 12,
+  });
+}
+
+function renderClosing(pres: PptxGenJS, slide: PresentationSlide): void {
+  const s = pres.addSlide();
+  s.addShape("rect", {
+    x: 0,
+    y: 0,
+    w: 10,
+    h: 5.625,
+    fill: { color: C.primary },
+    line: { color: C.primary },
+  });
+  s.addText(CLS_BRAND.name, {
+    x: 0.6,
+    y: 1.6,
+    w: 8.8,
+    h: 0.4,
+    fontSize: 16,
+    fontFace: CLS_BRAND.fonts.heading,
+    color: C.accent,
+    bold: true,
+    margin: 0,
+  });
+  s.addText(slide.title, {
+    x: 0.6,
+    y: 2.2,
+    w: 8.8,
+    h: 0.9,
+    fontSize: 32,
+    fontFace: CLS_BRAND.fonts.heading,
+    color: C.white,
+    bold: true,
+    margin: 0,
+  });
+  if (slide.subtitle) {
+    s.addText(slide.subtitle, {
+      x: 0.6,
+      y: 3.3,
+      w: 8.8,
+      h: 0.6,
+      fontSize: 15,
+      fontFace: CLS_BRAND.fonts.body,
+      color: C.primaryLight,
+      margin: 0,
+    });
+  }
+}
+
+export async function buildPresentation(
+  deckTitle: string,
+  slides: PresentationSlide[],
+): Promise<Uint8Array> {
+  const pres = new PptxGenJS();
+  pres.author = CLS_BRAND.name;
+  pres.title = deckTitle;
+  pres.subject = CLS_BRAND.tagline;
+  pres.layout = "LAYOUT_WIDE";
+
+  for (const slide of slides) {
+    switch (slide.kind) {
+      case "title":
+        renderTitle(pres, slide);
+        break;
+      case "closing":
+        renderClosing(pres, slide);
+        break;
+      case "two_column":
+        renderTwoColumn(pres, slide);
+        break;
+      case "table":
+        renderTable(pres, slide);
+        break;
+      case "agenda":
+      case "section":
+      case "bullets":
+      default:
+        renderBullets(pres, slide);
+        break;
+    }
+  }
+
+  const buffer = (await pres.write({ outputType: "nodebuffer" })) as Buffer;
   return new Uint8Array(buffer);
 }
